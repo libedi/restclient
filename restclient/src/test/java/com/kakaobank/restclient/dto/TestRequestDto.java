@@ -2,7 +2,6 @@ package com.kakaobank.restclient.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 import com.kakaobank.restclient.request.RestPostRequest;
 
@@ -11,7 +10,11 @@ public class TestRequestDto extends RestPostRequest {
 	private String UserID;
 	private String Value;
 	private String e2eID;
-	
+
+	public TestRequestDto() {
+		this.messageConverter = new JsonStringMessageConverter();
+	}
+
 	public String getUserID() {
 		return UserID;
 	}
@@ -38,10 +41,6 @@ public class TestRequestDto extends RestPostRequest {
 
 	public String getRequestPath() {
 		return "/api/v1/e2e";
-	}
-
-	public String getRequestParameters() throws JsonProcessingException {
-		return new JsonStringMessageConverter().messageConvert(this);
 	}
 
 	@Override

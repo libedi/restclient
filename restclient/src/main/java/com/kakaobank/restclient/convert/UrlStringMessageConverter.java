@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,24 +17,20 @@ import com.kakaobank.restclient.request.RestRequest;
  * @author 박상준
  *
  */
-public class UrlStringMessageConverter {
-	private static final Log logger = LogFactory.getLog(UrlStringMessageConverter.class);
+public class UrlStringMessageConverter implements MessageConverter {
 	private final String DEFAULT_ENCODING = "UTF-8";
 	
-	@SuppressWarnings("unchecked")
+	@Override
 	public String messageConvert(RestRequest request){
-		ObjectMapper mapper  = new ObjectMapper();
-		Map<String, Object> paramMap = mapper.convertValue(request, Map.class);
-		List<NameValuePair> paramList = this.convertParam(paramMap);
+		List<NameValuePair> paramList = this.convertParam(request);
 		String message = URLEncodedUtils.format(paramList, this.DEFAULT_ENCODING);
-//		if(logger.isDebugEnabled()){
-//			logger.debug("PARAM : " + message);
-//		}
-		System.out.println("PARAM : " + message);
+		System.out.println("REQUEST PARAMETER : " + message);
 		return message;
 	}
 	
-	private List<NameValuePair> convertParam(Map<String, Object> paramMap){
+	@SuppressWarnings("unchecked")
+	private List<NameValuePair> convertParam(RestRequest request){
+		Map<String, Object> paramMap = new ObjectMapper().convertValue(request, Map.class);
 		List<NameValuePair> paramList = new ArrayList<>();
 		Iterator<String> keys = paramMap.keySet().iterator();
 		String key = null;

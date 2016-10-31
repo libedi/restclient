@@ -11,6 +11,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.kakaobank.restclient.request.RestRequest;
 import com.kakaobank.restclient.response.RestResponse;
 
+
 /**
  * Rest API Client
  * @author 박상준
@@ -36,17 +37,18 @@ public class RestClient {
 	/**
 	 * Rest API 요청
 	 * @param restRequest
-	 * @param t
+	 * @param clazz
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public <T> RestResponse<T> exchange(RestRequest restRequest, Class<T> t) throws ClientProtocolException, IOException{
+	public <T> RestResponse<T> exchange(RestRequest restRequest, Class<T> clazz) throws ClientProtocolException, IOException{
 		if(restRequest == null){
 			throw new IllegalStateException("Request should not be a null.");
 		}
 		HttpHost host = new HttpHost(this.hostname, this.port, this.useHttps ? "https" : "http");
-		HttpRequest request = restRequest.getHttpUriRequest();
+		HttpRequest request = restRequest.getHttpRequest();
 		HttpClient client = new DefaultHttpClient();
-		return new RestResponse<T>(client.execute(host, request), t);
+		System.out.println("REQUEST URI : " + host.getSchemeName() + "://" + host.toHostString() + request.getRequestLine().getUri());
+		return new RestResponse<T>(client.execute(host, request), clazz);
 	}
 }

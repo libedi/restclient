@@ -22,19 +22,18 @@ public class RestResponse<T> {
 	private final String EMPTY_JSON_STRING = "{}";
 	
 	private HttpResponse response;
-	private T t;
+	private T content;
 	
-	public RestResponse(HttpResponse response, Class<T> t) throws ParseException, IOException  {
-		ObjectMapper objectMapper = new ObjectMapper();
+	public RestResponse(HttpResponse response, Class<T> clazz) throws ParseException, IOException {
 		this.response = response;
 		HttpEntity entity = response.getEntity();
 		String result = (entity == null) ? this.EMPTY_JSON_STRING : EntityUtils.toString(entity, this.DEFAULT_ENCODING);
-		this.t = objectMapper.readValue(result, t);
+		this.content = new ObjectMapper().readValue(result, clazz);
 		this.printResponseInfo();
 	}
 
 	public T getContent(){
-		return this.t;
+		return this.content;
 	}
 
 	public HttpResponse getResponse() {
@@ -87,14 +86,14 @@ public class RestResponse<T> {
 		sb.append("----------------------------------------\n");
 		sb.append(this.response.getStatusLine()).append("\n");
 		Header[] headers = this.response.getAllHeaders();
-		for (int e=0; e<headers.length; ++e) {
-			sb.append(headers[e]).append("\n");
+		for (int i=0; i<headers.length; ++i) {
+			sb.append(headers[i]).append("\n");
 		}
 		sb.append("----------------------------------------\n");
 		if (entity != null) {
 			try {
 				sb.append(new ObjectMapper().writeValueAsString(this.getContent())).append("\n");
-			} catch (IOException arg4) {
+			} catch (IOException e) {
 				sb.append("Cannot convert entity to String\n");
 			}
 		} else {
