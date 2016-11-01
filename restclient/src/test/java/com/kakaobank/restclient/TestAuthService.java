@@ -53,6 +53,7 @@ public class TestAuthService {
 			// 2. PIN / 해제코드 번호 인증 수신
 			PinAuthRequestDto requestDto = new PinAuthRequestDto();
 			requestDto.setUser_id(userId);
+			requestDto.setTeller_id(tellerId);
 			requestDto.setPinNum("123456798");
 			
 			PinAuthResponseDto actual = this.e2eAuthUtil.requestPinNumberAuthentication(e2eIdResponseDto, requestDto);

@@ -19,6 +19,7 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	private final String REQUEST_PATH = "/api/v1/authentications/:userID/pin";
 	
 	private String user_id;			// 사용자관리번호
+	private String teller_id;		// 상담원ID
 	private List<String> value;		// E2E 암호화된 PIN / 해제번호
 	@JsonIgnore
 	private String pinNum;			// PIN / 해제번호
@@ -33,6 +34,12 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	}
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
+	}
+	public String getTeller_id() {
+		return teller_id;
+	}
+	public void setTeller_id(String teller_id) {
+		this.teller_id = teller_id;
 	}
 	public List<String> getValue() {
 		return value;
