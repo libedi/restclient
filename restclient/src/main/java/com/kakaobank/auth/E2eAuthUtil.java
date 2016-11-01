@@ -31,24 +31,19 @@ public class E2eAuthUtil {
 	/**
 	 * E2E ID 조회
 	 * 
-	 * @param userId
+	 * @param requestDto
 	 * @return E2eIdResponseDto
 	 * @throws Exception
 	 */
-	public E2eIdResponseDto getE2eId(String userId) throws Exception {
+	public E2eIdResponseDto getE2eId(E2eIdRequestDto requestDto) throws Exception {
 		E2eEncryptor e2e = new E2eEncryptor();
-		String publicKey = e2e.getCsPublicKey();
-		// 요청 DTO 생성
-		E2eIdRequestDto requestDto = new E2eIdRequestDto();
-		requestDto.setPublicKey(publicKey);
-		if(userId != null){
-			requestDto.setUserID(userId);
-		}
+		requestDto.setPublic_key(e2e.getCsPublicKey());
 		
 		RestResponse<E2eIdResponseDto> resp = this.restClient.exchange(requestDto, E2eIdResponseDto.class);
 		E2eIdResponseDto result = null;
 		if(resp.has200StatusCode()){
 			result = resp.getContent();
+			result.setE2eEncryptor(e2e);
 		}
 		return result;
 	}
@@ -64,12 +59,12 @@ public class E2eAuthUtil {
 	public PinAuthResponseDto requestPinNumberAuthentication(E2eIdResponseDto e2eIdResponseDto, PinAuthRequestDto pinAuthRequestDto)
 			throws Exception{
 		
-		E2eEncryptor e2e = new E2eEncryptor();
-		e2e.setStampPublicKey(e2eIdResponseDto.getPublic_key());
-		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
+		e2e.setE2eId(e2eIdResponseDto.getE2e_id());
 		// 데이터 암호화
-		pinAuthRequestDto.setValue(e2e.encryptMessage(pinAuthRequestDto.getValue()));
-		
+		pinAuthRequestDto.setValue(e2e.encryptMessage(pinAuthRequestDto.getPinNum()));
+		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, pinAuthRequestDto, PinAuthResponseDto.class);
 	}
 	
@@ -84,14 +79,14 @@ public class E2eAuthUtil {
 	public MobileAuthResponseDto requestMobileAuthentication(E2eIdResponseDto e2eIdResponseDto, MobileAuthRequestDto mobileAuthRequestDto)
 			throws Exception{
 		
-		E2eEncryptor e2e = new E2eEncryptor();
-		e2e.setStampPublicKey(e2eIdResponseDto.getPublic_key());
-		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
+		e2e.setE2eId(e2eIdResponseDto.getE2e_id());
 		// 데이터 암호화
 		mobileAuthRequestDto.setPhoneNumber(e2e.encryptMessage(mobileAuthRequestDto.getPhoneNumber()));
 		mobileAuthRequestDto.setName(e2e.encryptMessage(mobileAuthRequestDto.getName()));
 		mobileAuthRequestDto.setBirthDay(e2e.encryptMessage(mobileAuthRequestDto.getBirthDay()));
-		
+		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, mobileAuthRequestDto, MobileAuthResponseDto.class);
 	}
 	
@@ -113,7 +108,7 @@ public class E2eAuthUtil {
 	}
 	
 	/**
-	 * 암호화 데이터 요청
+	 * 암호화 데이터 인증 요청
 	 * 
 	 * @param e2eIdResponseDto
 	 * @param encryptedRequest
@@ -122,7 +117,7 @@ public class E2eAuthUtil {
 	 * @throws Exception
 	 */
 	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest, Class<T> clazz) throws Exception{
-		encryptedRequest.setE2eID(e2eIdResponseDto.getE2eId());
+		encryptedRequest.setE2e_id(e2eIdResponseDto.getE2e_id());
 		RestResponse<T> resp = this.restClient.exchange(encryptedRequest, clazz);
 		T result = null;
 		if(resp.has200StatusCode()){

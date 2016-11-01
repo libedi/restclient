@@ -1,6 +1,11 @@
 package com.kakaobank.auth.request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -8,39 +13,52 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class PinAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/:userID/pin";
 	
-	private String UserID;		// 회원ID
-	private String Value;		// E2E 암호화된 PIN / 해제번호
+	private String user_id;			// 사용자관리번호
+	private List<String> value;		// E2E 암호화된 PIN / 해제번호
+	@JsonIgnore
+	private String pinNum;			// PIN / 해제번호
 	
 	public PinAuthRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
+		this.value = new ArrayList<String>();
 	}
 	
-	public String getUserID() {
-		return UserID;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUserID(String userID) {
-		UserID = userID;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getValue() {
-		return Value;
+	public List<String> getValue() {
+		return value;
+	}
+	public void setValue(List<String> value) {
+		this.value = value;
 	}
 	public void setValue(String value) {
-		Value = value;
+		this.value.add(value);
+	}
+	public String getPinNum() {
+		return pinNum;
+	}
+	public void setPinNum(String pinNum) {
+		this.pinNum = pinNum;
 	}
 	@Override
 	public String getRequestPath() {
-		return this.REQUEST_PATH.replace(":userID", this.UserID);
+		return this.REQUEST_PATH.replace(":userID", this.user_id);
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PinAuthRequestDto{\"UserID\"=\"").append(UserID).append("\", \"Value\"=\"").append(Value)
-				.append("\", \"e2eID\"=\"").append(e2eID).append("\"}");
+		builder.append("PinAuthRequestDto{\"user_id\"=\"").append(user_id).append("\", \"value\"=\"").append(value)
+				.append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
 		return builder.toString();
 	}
-	
 }

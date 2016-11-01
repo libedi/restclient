@@ -8,14 +8,14 @@ import com.kakaobank.restclient.request.RestPostRequest;
  *
  */
 public abstract class EncryptedRequest extends RestPostRequest{
-	protected String e2eID;		// E2E ID
+	protected String e2e_id;		// E2E ID
 
-	public String getE2eID() {
-		return e2eID;
+	public String getE2e_id() {
+		return e2e_id;
 	}
 
-	public void setE2eID(String e2eID) {
-		this.e2eID = e2eID;
+	public void setE2e_id(String e2e_id) {
+		this.e2e_id = e2e_id;
 	}
 
 }

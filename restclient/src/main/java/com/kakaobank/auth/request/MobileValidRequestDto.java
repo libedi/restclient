@@ -1,5 +1,7 @@
 package com.kakaobank.auth.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 import com.kakaobank.restclient.request.RestPostRequest;
 
@@ -8,37 +10,38 @@ import com.kakaobank.restclient.request.RestPostRequest;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class MobileValidRequestDto extends RestPostRequest {
 	private final String REQUEST_PATH = "/api/v1/authentication/mobile/";
 	
-	protected String ValidationID;		// 휴대폰 본인확인 거래번호
-	protected String ArthNo;			// SMS 인증번호
+	protected String validation_id;		// 휴대폰 본인확인 거래번호
+	protected String arth_no;			// SMS 인증번호
 	
 	public MobileValidRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getValidationID() {
-		return ValidationID;
+	public String getValidation_id() {
+		return validation_id;
 	}
-	public void setValidationID(String validationID) {
-		ValidationID = validationID;
+	public void setValidation_id(String validation_id) {
+		this.validation_id = validation_id;
 	}
-	public String getArthNo() {
-		return ArthNo;
+	public String getArth_no() {
+		return arth_no;
 	}
-	public void setArthNo(String arthNo) {
-		ArthNo = arthNo;
+	public void setArth_no(String arth_no) {
+		this.arth_no = arth_no;
 	}
 	@Override
 	public String getRequestPath() {
-		return new StringBuilder().append(this.REQUEST_PATH).append(this.ValidationID).toString();
+		return new StringBuilder().append(this.REQUEST_PATH).append(this.validation_id).toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidRequestDto{\"ValidationID\"=\"").append(ValidationID).append("\", \"ArthNo\"=\"")
-				.append(ArthNo).append("\"}");
+		builder.append("MobileValidRequestDto{\"validation_id\"=\"").append(validation_id).append("\", \"arth_no\"=\"")
+				.append(arth_no).append("\"}");
 		return builder.toString();
 	}
 	

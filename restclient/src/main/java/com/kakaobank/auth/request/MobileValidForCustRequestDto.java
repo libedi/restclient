@@ -1,5 +1,7 @@
 package com.kakaobank.auth.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -7,32 +9,34 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class MobileValidForCustRequestDto extends MobileValidRequestDto {
-private final String REQUEST_PATH = "/api/v1/authentication/:userId/mobile/";
+	private final String REQUEST_PATH = "/api/v1/authentication/:userId/mobile/";
 	
-	private String UserID;	// 회원ID
+	private String user_id;	// 사용자관리번호
 	
 	public MobileValidForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getUserID() {
-		return UserID;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUserID(String userID) {
-		UserID = userID;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder()
-				.append(this.REQUEST_PATH.replace(":userId", this.UserID)).append(this.ValidationID)
+				.append(this.REQUEST_PATH.replace(":userId", this.user_id)).append(this.validation_id)
 				.toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidForCustRequestDto{\"UserID\"=\"").append(UserID).append("\", \"ValidationID\"=\"")
-				.append(ValidationID).append("\", \"ArthNo\"=\"").append(ArthNo).append("\"}");
+		builder.append("MobileValidForCustRequestDto{\"user_id\"=\"").append(user_id).append("\", \"validation_id\"=\"")
+				.append(validation_id).append("\", \"arth_no\"=\"").append(arth_no)
+				.append("\", \"messageConverter\"=\"").append(messageConverter).append("\"}");
 		return builder.toString();
 	}
 

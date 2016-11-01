@@ -1,6 +1,8 @@
 package com.kakaobank.auth.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -8,6 +10,7 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class MobileAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/mobile";
@@ -54,7 +57,7 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MobileAuthRequestDto{\"VenderCode\"=\"").append(VenderCode).append("\", \"PhoneNumber\"=\"")
 				.append(PhoneNumber).append("\", \"Name\"=\"").append(Name).append("\", \"BirthDay\"=\"")
-				.append(BirthDay).append("\", \"e2eID\"=\"").append(e2eID).append("\"}");
+				.append(BirthDay).append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
 		return builder.toString();
 	}
 

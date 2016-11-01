@@ -1,6 +1,8 @@
 package com.kakaobank.auth.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -8,33 +10,36 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class MobileAuthForCustRequestDto extends MobileAuthRequestDto {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/:userId/mobile";
 
-	private String UserID;	// 회원ID
+	private String user_id;	// 사용자관리번호
 	
 	public MobileAuthForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getUserID() {
-		return UserID;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUserID(String userID) {
-		UserID = userID;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	@Override
 	public String getRequestPath() {
-		return this.REQUEST_PATH.replace(":userId", this.UserID);
+		return this.REQUEST_PATH.replace(":userId", this.user_id);
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileAuthForCustRequestDto{\"UserID\"=\"").append(UserID).append("\", \"VenderCode\"=\"")
+		builder.append("MobileAuthForCustRequestDto{\"user_id\"=\"").append(user_id).append("\", \"VenderCode\"=\"")
 				.append(VenderCode).append("\", \"PhoneNumber\"=\"").append(PhoneNumber).append("\", \"Name\"=\"")
-				.append(Name).append("\", \"BirthDay\"=\"").append(BirthDay).append("\", \"e2eID\"=\"").append(e2eID)
+				.append(Name).append("\", \"BirthDay\"=\"").append(BirthDay).append("\", \"e2e_id\"=\"").append(e2e_id)
 				.append("\"}");
 		return builder.toString();
 	}
+	
 }
