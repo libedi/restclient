@@ -2,6 +2,7 @@ package com.kakaobank.auth.request;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
@@ -14,6 +15,7 @@ import com.kakaobank.restclient.request.RestPostRequest;
  */
 @JsonInclude(Include.NON_NULL)
 public class MobileValidRequestDto extends RestPostRequest {
+	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentication/mobile/";
 	
 	@NotEmpty
