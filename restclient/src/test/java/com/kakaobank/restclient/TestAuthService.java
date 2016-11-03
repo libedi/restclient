@@ -40,10 +40,11 @@ public class TestAuthService {
 	 * PIN 번호 인증 테스트
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void testCheckPinNumber() throws Exception {
 		String userId = "1100000004";
 		String tellerId = "751952";
+		String pinNumber = "123456";
 		// 1. E2E 키 수신
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setUser_id(userId);
@@ -54,14 +55,14 @@ public class TestAuthService {
 			PinAuthRequestDto requestDto = new PinAuthRequestDto();
 			requestDto.setUser_id(userId);
 			requestDto.setTeller_id(tellerId);
-			requestDto.setPinNum("123456798");
+			requestDto.setPinNum(pinNumber);
 			
 			PinAuthResponseDto actual = this.e2eAuthUtil.requestPinNumberAuthentication(e2eIdResponseDto, requestDto);
 			if(actual != null){
 				// 3. 응답결과 확인
 				System.out.println(actual.toString());
 				assertNotNull(actual.getCode());
-				assertNotNull(actual.getErrCount());
+				assertNotNull(actual.getFail_count());
 				assertNotNull(actual.getMessage());
 			} else {
 				System.out.println("PIN 번호 인증 결과를 가져올 수 없습니다.");
@@ -77,14 +78,14 @@ public class TestAuthService {
 	 * 회원 휴대폰 번호 인증 테스트
 	 * @throws Exception
 	 */
-//	@Test
+	@Test
 	public void testCheckPhoneAuthForRegCust() throws Exception {
 		String userId = "1100000004";
 		String tellerId = "751952";
 		String name = "홍길동";
-		String venderCode = "01";
+		String vendorCode = "01";
 		String phoneNumber = "01012345678";
-		String birthDay = "19821231";
+		String birthdayAndGender = "198212311";
 		// 1. E2E 키 수신
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setUser_id(userId);
@@ -95,20 +96,20 @@ public class TestAuthService {
 			MobileAuthForCustRequestDto requestDto = new MobileAuthForCustRequestDto();
 			requestDto.setUser_id(userId);
 			requestDto.setName(name);
-			requestDto.setVenderCode(venderCode);
-			requestDto.setPhoneNumber(phoneNumber);
-			requestDto.setBirthDay(birthDay);
+			requestDto.setVendor_code(vendorCode);
+			requestDto.setPhone_number(phoneNumber);
+			requestDto.setBirthday_and_gender(birthdayAndGender);
 			
 			MobileAuthResponseDto actual = this.e2eAuthUtil.requestMobileAuthentication(e2eIdResponseDto, requestDto);
 			if(actual != null){
 				// 3. 응답결과 확인
 				System.out.println(actual.toString());
 				assertNotNull(actual.getCode());
-				assertNotNull(actual.getErrCount());
+				assertNotNull(actual.getFail_count());
 				assertNotNull(actual.getMessage());
 				assertNotNull(actual.getValidation_id());
 			} else {
-				System.out.println("PIN 번호 인증 결과를 가져올 수 없습니다.");
+				System.out.println("휴대폰번호 인증 결과를 가져올 수 없습니다. [회원고객, E2E ID : " + e2eIdResponseDto.getE2e_id() +"]");
 				assertTrue(false);
 			}
 		} else {
@@ -155,9 +156,9 @@ public class TestAuthService {
 	public void testCheckPhoneAuthForNoRegCust() throws Exception {
 		String tellerId = "751952";
 		String custNm = "홍길동";
-		String venderCode = "01";
+		String vendorCode = "01";
 		String phoneNumber = "01012345678";
-		String birthDay = "19801231";
+		String birthdayAndGender = "198012311";
 		
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setTeller_id(tellerId);
@@ -166,16 +167,16 @@ public class TestAuthService {
 			// 1. 휴대폰 본인확인 여부 수신
 			MobileAuthRequestDto requestDto = new MobileAuthRequestDto();
 			requestDto.setName(custNm);
-			requestDto.setVenderCode(venderCode);
-			requestDto.setPhoneNumber(phoneNumber);
-			requestDto.setBirthDay(birthDay);
+			requestDto.setVendor_code(vendorCode);
+			requestDto.setPhone_number(phoneNumber);
+			requestDto.setBirthday_and_gender(birthdayAndGender);
 			
 			MobileAuthResponseDto actual = this.e2eAuthUtil.requestMobileAuthentication(e2eIdResponseDto, requestDto);
 			if(actual != null){
 				// 2. 응답결과 반환
 				System.out.println(actual.toString());
 				assertNotNull(actual.getCode());
-				assertNotNull(actual.getErrCount());
+				assertNotNull(actual.getFail_count());
 				assertNotNull(actual.getMessage());
 				assertNotNull(actual.getValidation_id());
 			} else {

@@ -1,5 +1,7 @@
 package com.kakaobank.auth.request;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.kakaobank.restclient.request.RestPostRequest;
 
 /**
@@ -8,6 +10,7 @@ import com.kakaobank.restclient.request.RestPostRequest;
  *
  */
 public abstract class EncryptedRequest extends RestPostRequest{
+	@NotEmpty
 	protected String e2e_id;		// E2E ID
 
 	public String getE2e_id() {

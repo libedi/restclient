@@ -1,5 +1,9 @@
 package com.kakaobank.auth.request;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -16,8 +20,11 @@ public class E2eIdRequestDto extends RestPostRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/e2e";
 	
+	@NotEmpty
 	private String public_key;		// 공개키
 	private String user_id;			// 사용자관리번호
+	@NotEmpty
+	@Size(min=6, max=6)
 	private String teller_id;		// 상담원ID
 	
 	public E2eIdRequestDto() {

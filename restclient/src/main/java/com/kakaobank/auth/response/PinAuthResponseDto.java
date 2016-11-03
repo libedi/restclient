@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class PinAuthResponseDto extends ErrorResponse {
 	private String code;		// 응답코드
-	private Integer errCount;	// 비밀번호 오류횟수
-	private Long failCount;
+	private Long fail_count;
 	
 	public String getCode() {
 		return code;
@@ -20,27 +19,20 @@ public class PinAuthResponseDto extends ErrorResponse {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public Integer getErrCount() {
-		return errCount;
+	public Long getFail_count() {
+		return fail_count;
 	}
-	public void setErrCount(Integer errCount) {
-		this.errCount = errCount;
-	}
-	public Long getFailCount() {
-		return failCount;
-	}
-	public void setFailCount(Long failCount) {
-		this.failCount = failCount;
+	public void setFail_count(Long fail_count) {
+		this.fail_count = fail_count;
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PinAuthResponseDto{\"code\"=\"").append(code).append("\", \"errCount\"=\"").append(errCount)
-				.append("\", \"failCount\"=\"").append(failCount).append("\", \"timestamp\"=\"").append(timestamp)
-				.append("\", \"status\"=\"").append(status).append("\", \"exception\"=\"").append(exception)
-				.append("\", \"message\"=\"").append(message).append("\", \"error\"=\"").append(error)
-				.append("\", \"path\"=\"").append(path).append("\", \"errors\"=\"").append(errors).append("\"}");
+		builder.append("PinAuthResponseDto{\"code\"=\"").append(code).append("\", \"fail_count\"=\"").append(fail_count)
+				.append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"").append(status)
+				.append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"").append(message)
+				.append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
+				.append("\", \"errors\"=\"").append(errors).append("\"}");
 		return builder.toString();
 	}
-	
 }

@@ -1,5 +1,7 @@
 package com.kakaobank.auth.request;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
@@ -13,6 +15,7 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	private final String REQUEST_PATH = "/api/v1/authentication/:userId/mobile/";
 	
+	@NotEmpty
 	private String user_id;	// 사용자관리번호
 	
 	public MobileValidForCustRequestDto() {

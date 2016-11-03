@@ -14,6 +14,7 @@ import com.kakaobank.auth.response.MobileAuthResponseDto;
 import com.kakaobank.auth.response.MobileValidResponseDto;
 import com.kakaobank.auth.response.PinAuthResponseDto;
 import com.kakaobank.restclient.RestClient;
+import com.kakaobank.restclient.exception.RequestException;
 import com.kakaobank.restclient.response.RestResponse;
 import com.kakaobank.stamp.e2e.E2eEncryptor;
 
@@ -56,8 +57,8 @@ public class E2eAuthUtil {
 	 * @return PinAuthResponseDto
 	 * @throws Exception
 	 */
-	public PinAuthResponseDto requestPinNumberAuthentication(E2eIdResponseDto e2eIdResponseDto, PinAuthRequestDto pinAuthRequestDto)
-			throws Exception{
+	public PinAuthResponseDto requestPinNumberAuthentication(E2eIdResponseDto e2eIdResponseDto, 
+			PinAuthRequestDto pinAuthRequestDto) throws Exception{
 		
 		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
 		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
@@ -76,16 +77,16 @@ public class E2eAuthUtil {
 	 * @return MobileAuthResponseDto
 	 * @throws Exception 
 	 */
-	public MobileAuthResponseDto requestMobileAuthentication(E2eIdResponseDto e2eIdResponseDto, MobileAuthRequestDto mobileAuthRequestDto)
-			throws Exception{
+	public MobileAuthResponseDto requestMobileAuthentication(E2eIdResponseDto e2eIdResponseDto,
+			MobileAuthRequestDto mobileAuthRequestDto) throws Exception{
 		
 		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
 		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
 		e2e.setE2eId(e2eIdResponseDto.getE2e_id());
 		// 데이터 암호화
-		mobileAuthRequestDto.setPhoneNumber(e2e.encryptMessage(mobileAuthRequestDto.getPhoneNumber()));
+		mobileAuthRequestDto.setPhone_number(e2e.encryptMessage(mobileAuthRequestDto.getPhone_number()));
 		mobileAuthRequestDto.setName(e2e.encryptMessage(mobileAuthRequestDto.getName()));
-		mobileAuthRequestDto.setBirthDay(e2e.encryptMessage(mobileAuthRequestDto.getBirthDay()));
+		mobileAuthRequestDto.setBirthday_and_gender(e2e.encryptMessage(mobileAuthRequestDto.getBirthday_and_gender()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, mobileAuthRequestDto, MobileAuthResponseDto.class);
 	}
@@ -97,8 +98,11 @@ public class E2eAuthUtil {
 	 * @return MobileValidResponseDto
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
+	 * @throws RequestException 
 	 */
-	public MobileValidResponseDto requestMobileValidataion(MobileValidRequestDto mobileValidRequestDto) throws ClientProtocolException, IOException{
+	public MobileValidResponseDto requestMobileValidataion(MobileValidRequestDto mobileValidRequestDto)
+			throws ClientProtocolException, IOException, RequestException{
+		
 		RestResponse<MobileValidResponseDto> resp = this.restClient.exchange(mobileValidRequestDto, MobileValidResponseDto.class);
 		MobileValidResponseDto result = null;
 		if(resp.has200StatusCode()){
@@ -114,9 +118,14 @@ public class E2eAuthUtil {
 	 * @param encryptedRequest
 	 * @param clazz
 	 * @return T
+	 * @throws RequestException 
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 * @throws Exception
 	 */
-	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest, Class<T> clazz) throws Exception{
+	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest,
+			Class<T> clazz) throws ClientProtocolException, IOException, RequestException{
+		
 		encryptedRequest.setE2e_id(e2eIdResponseDto.getE2e_id());
 		RestResponse<T> resp = this.restClient.exchange(encryptedRequest, clazz);
 		T result = null;

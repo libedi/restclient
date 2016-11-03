@@ -8,8 +8,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.kakaobank.restclient.exception.RequestException;
 import com.kakaobank.restclient.request.RestRequest;
 import com.kakaobank.restclient.response.RestResponse;
+import com.kakaobank.restclient.validator.RequestValidator;
 
 
 /**
@@ -41,10 +43,8 @@ public class RestClient {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public <T> RestResponse<T> exchange(RestRequest restRequest, Class<T> clazz) throws ClientProtocolException, IOException{
-		if(restRequest == null){
-			throw new IllegalStateException("Request should not be a null.");
-		}
+	public <T> RestResponse<T> exchange(RestRequest restRequest, Class<T> clazz) throws ClientProtocolException, IOException, RequestException{
+		RequestValidator.validate(restRequest);
 		HttpHost host = new HttpHost(this.hostname, this.port, this.useHttps ? "https" : "http");
 		HttpRequest request = restRequest.getHttpRequest();
 		HttpClient client = new DefaultHttpClient();

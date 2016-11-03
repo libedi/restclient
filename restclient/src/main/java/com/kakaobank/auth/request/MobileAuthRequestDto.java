@@ -1,5 +1,9 @@
 package com.kakaobank.auth.request;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -15,38 +19,43 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/mobile";
 
-	protected String VenderCode;		// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO)
-	protected String PhoneNumber;		// E2E 암호화 된 휴대폰 번호
-	protected String Name;				// E2E 암호화 된 고객명
-	protected String BirthDay;			// E2E 암호화 된 생년월일 8자리 (19001231)
+	@NotEmpty
+	@Pattern(regexp="^0[1-6]$")
+	protected String vendor_code;			// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO)
+	@NotEmpty
+	protected String phone_number;			// E2E 암호화 된 휴대폰 번호
+	@NotEmpty
+	protected String name;					// E2E 암호화 된 고객명
+	@NotEmpty
+	protected String birthday_and_gender;	// E2E 암호화 된 생년월일 8자리 + 성별코드 1자리 (190012311)
 	
 	public MobileAuthRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getVenderCode() {
-		return VenderCode;
+	public String getVendor_code() {
+		return vendor_code;
 	}
-	public void setVenderCode(String venderCode) {
-		VenderCode = venderCode;
+	public void setVendor_code(String vendor_code) {
+		this.vendor_code = vendor_code;
 	}
-	public String getPhoneNumber() {
-		return PhoneNumber;
+	public String getPhone_number() {
+		return phone_number;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		PhoneNumber = phoneNumber;
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
-	public String getBirthDay() {
-		return BirthDay;
+	public String getBirthday_and_gender() {
+		return birthday_and_gender;
 	}
-	public void setBirthDay(String birthDay) {
-		BirthDay = birthDay;
+	public void setBirthday_and_gender(String birthday_and_gender) {
+		this.birthday_and_gender = birthday_and_gender;
 	}
 	@Override
 	public String getRequestPath() {
@@ -55,9 +64,9 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileAuthRequestDto{\"VenderCode\"=\"").append(VenderCode).append("\", \"PhoneNumber\"=\"")
-				.append(PhoneNumber).append("\", \"Name\"=\"").append(Name).append("\", \"BirthDay\"=\"")
-				.append(BirthDay).append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
+		builder.append("MobileAuthRequestDto{\"vendor_code\"=\"").append(vendor_code).append("\", \"phone_number\"=\"")
+				.append(phone_number).append("\", \"name\"=\"").append(name).append("\", \"birthday_and_gender\"=\"")
+				.append(birthday_and_gender).append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
 		return builder.toString();
 	}
 

@@ -3,6 +3,10 @@ package com.kakaobank.auth.request;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -18,8 +22,12 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/:userID/pin";
 	
+	@NotEmpty
 	private String user_id;			// 사용자관리번호
+	@NotEmpty
+	@Size(min=6, max=6)
 	private String teller_id;		// 상담원ID
+	@NotEmpty
 	private List<String> value;		// E2E 암호화된 PIN / 해제번호
 	@JsonIgnore
 	private String pinNum;			// PIN / 해제번호
