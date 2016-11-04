@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -18,15 +20,16 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PinAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/:userID/pin";
 	
 	@NotEmpty
-	private String user_id;			// 사용자관리번호
+	private String userId;			// 사용자관리번호
 	@NotEmpty
 	@Size(min=6, max=6)
-	private String teller_id;		// 상담원ID
+	private String tellerId;		// 상담원ID
 	@NotEmpty
 	private List<String> value;		// E2E 암호화된 PIN / 해제번호
 	@JsonIgnore
@@ -37,17 +40,17 @@ public class PinAuthRequestDto extends EncryptedRequest {
 		this.value = new ArrayList<String>();
 	}
 	
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getTeller_id() {
-		return teller_id;
+	public String getTellerId() {
+		return tellerId;
 	}
-	public void setTeller_id(String teller_id) {
-		this.teller_id = teller_id;
+	public void setTellerId(String tellerId) {
+		this.tellerId = tellerId;
 	}
 	public List<String> getValue() {
 		return value;
@@ -55,8 +58,8 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	public void setValue(List<String> value) {
 		this.value = value;
 	}
-	public void setValue(String value) {
-		this.value.add(value);
+	public void setValue(String pinNum){
+		this.value.add(pinNum);
 	}
 	public String getPinNum() {
 		return pinNum;
@@ -66,14 +69,14 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	}
 	@Override
 	public String getRequestPath() {
-		return this.REQUEST_PATH.replace(":userID", this.user_id);
+		return this.REQUEST_PATH.replace(":userID", this.userId);
 	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PinAuthRequestDto{\"user_id\"=\"").append(user_id).append("\", \"value\"=\"").append(value)
-				.append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
+		builder.append("PinAuthRequestDto{\"userId\"=\"").append(userId).append("\", \"tellerId\"=\"").append(tellerId)
+				.append("\", \"value\"=\"").append(value).append("\", \"pinNum\"=\"").append(pinNum)
+				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
 	}
 }

@@ -2,14 +2,21 @@ package com.kakaobank.auth.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ErrorResponseDetail {
 	private List<String> codes;
 	private List<ErrorArgumentDetail> arguments;
-	private String default_message;
-	private String object_name;
+	private String defaultMessage;
+	private String objectName;
 	private String field;
-	private String rejected_value;
-	private String binding_failure;
+	private String rejectedValue;
+	private String bindingFailure;
 	private String code;
 	
 	public List<String> getCodes() {
@@ -24,17 +31,17 @@ public class ErrorResponseDetail {
 	public void setArguments(List<ErrorArgumentDetail> arguments) {
 		this.arguments = arguments;
 	}
-	public String getDefault_message() {
-		return default_message;
+	public String getDefaultMessage() {
+		return defaultMessage;
 	}
-	public void setDefault_message(String default_message) {
-		this.default_message = default_message;
+	public void setDefaultMessage(String defaultMessage) {
+		this.defaultMessage = defaultMessage;
 	}
-	public String getObject_name() {
-		return object_name;
+	public String getObjectName() {
+		return objectName;
 	}
-	public void setObject_name(String object_name) {
-		this.object_name = object_name;
+	public void setObjectName(String objectName) {
+		this.objectName = objectName;
 	}
 	public String getField() {
 		return field;
@@ -42,17 +49,17 @@ public class ErrorResponseDetail {
 	public void setField(String field) {
 		this.field = field;
 	}
-	public String getRejected_value() {
-		return rejected_value;
+	public String getRejectedValue() {
+		return rejectedValue;
 	}
-	public void setRejected_value(String rejected_value) {
-		this.rejected_value = rejected_value;
+	public void setRejectedValue(String rejectedValue) {
+		this.rejectedValue = rejectedValue;
 	}
-	public String getBinding_failure() {
-		return binding_failure;
+	public String getBindingFailure() {
+		return bindingFailure;
 	}
-	public void setBinding_failure(String binding_failure) {
-		this.binding_failure = binding_failure;
+	public void setBindingFailure(String bindingFailure) {
+		this.bindingFailure = bindingFailure;
 	}
 	public String getCode() {
 		return code;
@@ -64,10 +71,11 @@ public class ErrorResponseDetail {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ErrorResponseDetail{\"codes\"=\"").append(codes).append("\", \"arguments\"=\"")
-				.append(arguments).append("\", \"default_message\"=\"").append(default_message)
-				.append("\", \"object_name\"=\"").append(object_name).append("\", \"field\"=\"").append(field)
-				.append("\", \"rejected_value\"=\"").append(rejected_value).append("\", \"binding_failure\"=\"")
-				.append(binding_failure).append("\", \"code\"=\"").append(code).append("\"}");
+				.append(arguments).append("\", \"defaultMessage\"=\"").append(defaultMessage)
+				.append("\", \"objectName\"=\"").append(objectName).append("\", \"field\"=\"").append(field)
+				.append("\", \"rejectedValue\"=\"").append(rejectedValue).append("\", \"bindingFailure\"=\"")
+				.append(bindingFailure).append("\", \"code\"=\"").append(code).append("\"}");
 		return builder.toString();
 	}
+	
 }

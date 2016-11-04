@@ -38,7 +38,7 @@ public class E2eAuthUtil {
 	 */
 	public E2eIdResponseDto getE2eId(E2eIdRequestDto requestDto) throws Exception {
 		E2eEncryptor e2e = new E2eEncryptor();
-		requestDto.setPublic_key(e2e.getCsPublicKey());
+		requestDto.setPublicKey(e2e.getCsPublicKey());
 		
 		RestResponse<E2eIdResponseDto> resp = this.restClient.exchange(requestDto, E2eIdResponseDto.class);
 		E2eIdResponseDto result = null;
@@ -61,8 +61,8 @@ public class E2eAuthUtil {
 			PinAuthRequestDto pinAuthRequestDto) throws Exception{
 		
 		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
-		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
-		e2e.setE2eId(e2eIdResponseDto.getE2e_id());
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
 		// 데이터 암호화
 		pinAuthRequestDto.setValue(e2e.encryptMessage(pinAuthRequestDto.getPinNum()));
 		// 인증요청
@@ -81,12 +81,12 @@ public class E2eAuthUtil {
 			MobileAuthRequestDto mobileAuthRequestDto) throws Exception{
 		
 		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
-		e2e.setStampPublicKey(e2eIdResponseDto.getServer_public_key());
-		e2e.setE2eId(e2eIdResponseDto.getE2e_id());
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
 		// 데이터 암호화
-		mobileAuthRequestDto.setPhone_number(e2e.encryptMessage(mobileAuthRequestDto.getPhone_number()));
+		mobileAuthRequestDto.setPhoneNumber(e2e.encryptMessage(mobileAuthRequestDto.getPhoneNumber()));
 		mobileAuthRequestDto.setName(e2e.encryptMessage(mobileAuthRequestDto.getName()));
-		mobileAuthRequestDto.setBirthday_and_gender(e2e.encryptMessage(mobileAuthRequestDto.getBirthday_and_gender()));
+		mobileAuthRequestDto.setBirthdayAndGender(e2e.encryptMessage(mobileAuthRequestDto.getBirthdayAndGender()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, mobileAuthRequestDto, MobileAuthResponseDto.class);
 	}
@@ -121,12 +121,11 @@ public class E2eAuthUtil {
 	 * @throws RequestException 
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
-	 * @throws Exception
 	 */
 	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest,
 			Class<T> clazz) throws ClientProtocolException, IOException, RequestException{
 		
-		encryptedRequest.setE2e_id(e2eIdResponseDto.getE2e_id());
+		encryptedRequest.setE2eId(e2eIdResponseDto.getE2eId());
 		RestResponse<T> resp = this.restClient.exchange(encryptedRequest, clazz);
 		T result = null;
 		if(resp.has200StatusCode()){

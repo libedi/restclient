@@ -2,10 +2,17 @@ package com.kakaobank.auth.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ErrorArgumentDetail {
 	private List<String> codes;
 	private String arguments;
-	private String default_message;
+	private String defaultMessage;
 	private String code;
 	
 	public List<String> getCodes() {
@@ -20,11 +27,11 @@ public class ErrorArgumentDetail {
 	public void setArguments(String arguments) {
 		this.arguments = arguments;
 	}
-	public String getDefault_message() {
-		return default_message;
+	public String getDefaultMessage() {
+		return defaultMessage;
 	}
-	public void setDefault_message(String default_message) {
-		this.default_message = default_message;
+	public void setDefaultMessage(String defaultMessage) {
+		this.defaultMessage = defaultMessage;
 	}
 	public String getCode() {
 		return code;
@@ -35,9 +42,9 @@ public class ErrorArgumentDetail {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Arguments{\"codes\"=\"").append(codes).append("\", \"arguments\"=\"").append(arguments)
-				.append("\", \"default_message\"=\"").append(default_message).append("\", \"code\"=\"").append(code)
-				.append("\"}");
+		builder.append("ErrorArgumentDetail{\"codes\"=\"").append(codes).append("\", \"arguments\"=\"")
+				.append(arguments).append("\", \"defaultMessage\"=\"").append(defaultMessage).append("\", \"code\"=\"")
+				.append(code).append("\"}");
 		return builder.toString();
 	}
 }

@@ -2,11 +2,18 @@ package com.kakaobank.auth.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 /**
  * Stamp API 서버 오류 응답
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public abstract class ErrorResponse {
 	protected String timestamp;
 	protected String status;		// HTTP 상태코드

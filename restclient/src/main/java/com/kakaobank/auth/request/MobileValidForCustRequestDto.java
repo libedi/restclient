@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -13,35 +15,35 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentication/:userId/mobile/";
 	
 	@NotEmpty
-	private String user_id;	// 사용자관리번호
+	private String userId;	// 사용자관리번호
 	
 	public MobileValidForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder()
-				.append(this.REQUEST_PATH.replace(":userId", this.user_id)).append(this.validation_id)
+				.append(this.REQUEST_PATH.replace(":userId", this.userId)).append(this.validationId)
 				.toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidForCustRequestDto{\"user_id\"=\"").append(user_id).append("\", \"validation_id\"=\"")
-				.append(validation_id).append("\", \"arth_no\"=\"").append(arth_no)
-				.append("\", \"messageConverter\"=\"").append(messageConverter).append("\"}");
+		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId).append("\", \"validationId\"=\"")
+				.append(validationId).append("\", \"arthNo\"=\"").append(arthNo).append("\"}");
 		return builder.toString();
 	}
 

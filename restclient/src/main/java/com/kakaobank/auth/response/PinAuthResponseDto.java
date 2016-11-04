@@ -2,6 +2,8 @@ package com.kakaobank.auth.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * PIN / 해제번호 인증 응답 DTO
@@ -9,9 +11,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PinAuthResponseDto extends ErrorResponse {
 	private String code;		// 응답코드
-	private Long fail_count;
+	private Long failCount;
 	
 	public String getCode() {
 		return code;
@@ -19,16 +22,16 @@ public class PinAuthResponseDto extends ErrorResponse {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public Long getFail_count() {
-		return fail_count;
+	public Long getFailCount() {
+		return failCount;
 	}
-	public void setFail_count(Long fail_count) {
-		this.fail_count = fail_count;
+	public void setFailCount(Long failCount) {
+		this.failCount = failCount;
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PinAuthResponseDto{\"code\"=\"").append(code).append("\", \"fail_count\"=\"").append(fail_count)
+		builder.append("PinAuthResponseDto{\"code\"=\"").append(code).append("\", \"failCount\"=\"").append(failCount)
 				.append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"").append(status)
 				.append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"").append(message)
 				.append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)

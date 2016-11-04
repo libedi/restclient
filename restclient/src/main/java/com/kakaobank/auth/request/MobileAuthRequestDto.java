@@ -1,12 +1,15 @@
 package com.kakaobank.auth.request;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
@@ -15,35 +18,37 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileAuthRequestDto extends EncryptedRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentications/mobile";
 
 	@NotEmpty
 	@Pattern(regexp="^0[1-6]$")
-	protected String vendor_code;			// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO)
+	@Size(min=2, max=2)
+	protected String vendorCode;			// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO)
 	@NotEmpty
-	protected String phone_number;			// E2E 암호화 된 휴대폰 번호
+	protected String phoneNumber;			// E2E 암호화 된 휴대폰 번호
 	@NotEmpty
 	protected String name;					// E2E 암호화 된 고객명
 	@NotEmpty
-	protected String birthday_and_gender;	// E2E 암호화 된 생년월일 8자리 + 성별코드 1자리 (190012311)
+	protected String birthdayAndGender;	// E2E 암호화 된 생년월일 8자리 + 성별코드 1자리 (190012311)
 	
 	public MobileAuthRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getVendor_code() {
-		return vendor_code;
+	public String getVendorCode() {
+		return vendorCode;
 	}
-	public void setVendor_code(String vendor_code) {
-		this.vendor_code = vendor_code;
+	public void setVendorCode(String vendorCode) {
+		this.vendorCode = vendorCode;
 	}
-	public String getPhone_number() {
-		return phone_number;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	public String getName() {
 		return name;
@@ -51,11 +56,11 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getBirthday_and_gender() {
-		return birthday_and_gender;
+	public String getBirthdayAndGender() {
+		return birthdayAndGender;
 	}
-	public void setBirthday_and_gender(String birthday_and_gender) {
-		this.birthday_and_gender = birthday_and_gender;
+	public void setBirthdayAndGender(String birthdayAndGender) {
+		this.birthdayAndGender = birthdayAndGender;
 	}
 	@Override
 	public String getRequestPath() {
@@ -64,9 +69,9 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileAuthRequestDto{\"vendor_code\"=\"").append(vendor_code).append("\", \"phone_number\"=\"")
-				.append(phone_number).append("\", \"name\"=\"").append(name).append("\", \"birthday_and_gender\"=\"")
-				.append(birthday_and_gender).append("\", \"e2e_id\"=\"").append(e2e_id).append("\"}");
+		builder.append("MobileAuthRequestDto{\"vendorCode\"=\"").append(vendorCode).append("\", \"phoneNumber\"=\"")
+				.append(phoneNumber).append("\", \"name\"=\"").append(name).append("\", \"birthdayAndGender\"=\"")
+				.append(birthdayAndGender).append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
 	}
 

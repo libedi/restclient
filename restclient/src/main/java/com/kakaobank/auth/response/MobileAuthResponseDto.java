@@ -2,6 +2,8 @@ package com.kakaobank.auth.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * 휴대폰 확인 응답 DTO
@@ -9,17 +11,18 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileAuthResponseDto extends ErrorResponse {
-	private String validation_id;	// 휴대폰 본인확인 거래번호
+	private String validationId;	// 휴대폰 본인확인 거래번호
 	private String code;			// 응답코드
-	private Long fail_count;		// 비밀번호 오류횟수
-	private Long user_fail_count;
+	private Long failCount;		// 비밀번호 오류횟수
+	private Long userFailCount;
 	
-	public String getValidation_id() {
-		return validation_id;
+	public String getValidationId() {
+		return validationId;
 	}
-	public void setValidation_id(String validation_id) {
-		this.validation_id = validation_id;
+	public void setValidationId(String validationId) {
+		this.validationId = validationId;
 	}
 	public String getCode() {
 		return code;
@@ -27,27 +30,28 @@ public class MobileAuthResponseDto extends ErrorResponse {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public Long getFail_count() {
-		return fail_count;
+	public Long getFailCount() {
+		return failCount;
 	}
-	public void setFail_count(Long fail_count) {
-		this.fail_count = fail_count;
+	public void setFailCount(Long failCount) {
+		this.failCount = failCount;
 	}
-	public Long getUser_fail_count() {
-		return user_fail_count;
+	public Long getUserFailCount() {
+		return userFailCount;
 	}
-	public void setUser_fail_count(Long user_fail_count) {
-		this.user_fail_count = user_fail_count;
+	public void setUserFailCount(Long userFailCount) {
+		this.userFailCount = userFailCount;
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileAuthResponseDto{\"validation_id\"=\"").append(validation_id).append("\", \"code\"=\"")
-				.append(code).append("\", \"fail_count\"=\"").append(fail_count).append("\", \"user_fail_count\"=\"")
-				.append(user_fail_count).append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"")
+		builder.append("MobileAuthResponseDto{\"validationId\"=\"").append(validationId).append("\", \"code\"=\"")
+				.append(code).append("\", \"failCount\"=\"").append(failCount).append("\", \"userFailCount\"=\"")
+				.append(userFailCount).append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"")
 				.append(status).append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"")
 				.append(message).append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
 				.append("\", \"errors\"=\"").append(errors).append("\"}");
 		return builder.toString();
 	}
+	
 }

@@ -2,6 +2,10 @@ package com.kakaobank.auth.request;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.request.RestPostRequest;
 
 /**
@@ -9,16 +13,18 @@ import com.kakaobank.restclient.request.RestPostRequest;
  * @author 박상준
  *
  */
+@JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public abstract class EncryptedRequest extends RestPostRequest{
 	@NotEmpty
-	protected String e2e_id;		// E2E ID
+	protected String e2eId;		// E2E ID
 
-	public String getE2e_id() {
-		return e2e_id;
+	public String getE2eId() {
+		return e2eId;
 	}
 
-	public void setE2e_id(String e2e_id) {
-		this.e2e_id = e2e_id;
+	public void setE2eId(String e2eId) {
+		this.e2eId = e2eId;
 	}
 
 }

@@ -30,8 +30,8 @@ public class TestAuthKeyRequest {
 		String publicKey = e2e.getCsPublicKey();
 		
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
-		e2eIdRequestDto.setPublic_key(publicKey);
-		e2eIdRequestDto.setTeller_id("10000000030");
+		e2eIdRequestDto.setPublicKey(publicKey);
+		e2eIdRequestDto.setTellerId("10000000030");
 		
 		RestResponse<E2eIdResponseDto> res = client.exchange(e2eIdRequestDto, E2eIdResponseDto.class);
 		System.out.println("STATUS CODE : " + res.getStatusCode());
@@ -39,11 +39,11 @@ public class TestAuthKeyRequest {
 		if(res != null){
 			if(res.has200StatusCode() && res.getContent() instanceof E2eIdResponseDto){
 				E2eIdResponseDto result = res.getContent();
-				assertNotNull(result.getE2e_id());
-				assertNotNull(result.getServer_public_key());
+				assertNotNull(result.getE2eId());
+				assertNotNull(result.getServerPublicKey());
 				
-				System.out.println(result.getE2e_id());
-				System.out.println(result.getServer_public_key());
+				System.out.println(result.getE2eId());
+				System.out.println(result.getServerPublicKey());
 				assertTrue(true);
 			} else {
 				System.out.println("" + res.getResponse().getStatusLine().getReasonPhrase());

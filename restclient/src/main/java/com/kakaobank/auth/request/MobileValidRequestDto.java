@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 import com.kakaobank.restclient.request.RestPostRequest;
 
@@ -14,40 +16,41 @@ import com.kakaobank.restclient.request.RestPostRequest;
  *
  */
 @JsonInclude(Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileValidRequestDto extends RestPostRequest {
 	@JsonIgnore
 	private final String REQUEST_PATH = "/api/v1/authentication/mobile/";
 	
 	@NotEmpty
-	protected String validation_id;		// 휴대폰 본인확인 거래번호
+	protected String validationId;		// 휴대폰 본인확인 거래번호
 	@NotEmpty
-	protected String arth_no;			// SMS 인증번호
+	protected String arthNo;			// SMS 인증번호
 	
 	public MobileValidRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 	}
 	
-	public String getValidation_id() {
-		return validation_id;
+	public String getValidationId() {
+		return validationId;
 	}
-	public void setValidation_id(String validation_id) {
-		this.validation_id = validation_id;
+	public void setValidationId(String validationId) {
+		this.validationId = validationId;
 	}
-	public String getArth_no() {
-		return arth_no;
+	public String getArthNo() {
+		return arthNo;
 	}
-	public void setArth_no(String arth_no) {
-		this.arth_no = arth_no;
+	public void setArthNo(String arthNo) {
+		this.arthNo = arthNo;
 	}
 	@Override
 	public String getRequestPath() {
-		return new StringBuilder().append(this.REQUEST_PATH).append(this.validation_id).toString();
+		return new StringBuilder().append(this.REQUEST_PATH).append(this.validationId).toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidRequestDto{\"validation_id\"=\"").append(validation_id).append("\", \"arth_no\"=\"")
-				.append(arth_no).append("\"}");
+		builder.append("MobileValidRequestDto{\"validationId\"=\"").append(validationId).append("\", \"arthNo\"=\"")
+				.append(arthNo).append("\"}");
 		return builder.toString();
 	}
 	
