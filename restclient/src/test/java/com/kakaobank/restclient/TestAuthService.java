@@ -40,7 +40,7 @@ public class TestAuthService {
 	 * PIN 번호 인증 테스트
 	 * @throws Exception
 	 */
-//	@Test
+	@Test
 	public void testCheckPinNumber() throws Exception {
 		String userId = "1100000004";
 		String tellerId = "751952";
@@ -55,7 +55,7 @@ public class TestAuthService {
 			PinAuthRequestDto requestDto = new PinAuthRequestDto();
 			requestDto.setUserId(userId);
 			requestDto.setTellerId(tellerId);
-			requestDto.setPinNum(pinNumber);
+			requestDto.setValue(pinNumber);
 			
 			PinAuthResponseDto actual = this.e2eAuthUtil.requestPinNumberAuthentication(e2eIdResponseDto, requestDto);
 			if(actual != null){
@@ -78,7 +78,7 @@ public class TestAuthService {
 	 * 회원 휴대폰 번호 인증 테스트
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void testCheckPhoneAuthForRegCust() throws Exception {
 		String userId = "1100000004";
 		String tellerId = "751952";

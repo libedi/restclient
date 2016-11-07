@@ -122,8 +122,8 @@ public class E2eAuthUtil {
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
 	 */
-	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest,
-			Class<T> clazz) throws ClientProtocolException, IOException, RequestException{
+	private <T> T requestEncryptedData(E2eIdResponseDto e2eIdResponseDto, EncryptedRequest encryptedRequest, Class<T> clazz)
+			throws ClientProtocolException, IOException, RequestException{
 		
 		encryptedRequest.setE2eId(e2eIdResponseDto.getE2eId());
 		RestResponse<T> resp = this.restClient.exchange(encryptedRequest, clazz);
