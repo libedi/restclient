@@ -25,6 +25,7 @@ public class MobileAuthForCustRequestDto extends MobileAuthRequestDto {
 	
 	public MobileAuthForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
+		this.guid = this.makeGuid();
 	}
 	
 	public String getUserId() {
@@ -36,6 +37,15 @@ public class MobileAuthForCustRequestDto extends MobileAuthRequestDto {
 	@Override
 	public String getRequestPath() {
 		return this.REQUEST_PATH.replace(":userId", this.userId);
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MobileAuthForCustRequestDto{\"userId\"=\"").append(userId).append("\", \"vendorCode\"=\"")
+				.append(vendorCode).append("\", \"phoneNumber\"=\"").append(phoneNumber).append("\", \"name\"=\"")
+				.append(name).append("\", \"birthdayAndGender\"=\"").append(birthdayAndGender)
+				.append("\", \"e2eId\"=\"").append(e2eId).append("\", \"guid\"=\"").append(guid).append("\"}");
+		return builder.toString();
 	}
 	
 }

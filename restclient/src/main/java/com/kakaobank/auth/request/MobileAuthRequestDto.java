@@ -36,6 +36,7 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	
 	public MobileAuthRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
+		this.guid = this.makeGuid();
 	}
 	
 	public String getVendorCode() {
@@ -71,7 +72,8 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MobileAuthRequestDto{\"vendorCode\"=\"").append(vendorCode).append("\", \"phoneNumber\"=\"")
 				.append(phoneNumber).append("\", \"name\"=\"").append(name).append("\", \"birthdayAndGender\"=\"")
-				.append(birthdayAndGender).append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
+				.append(birthdayAndGender).append("\", \"e2eId\"=\"").append(e2eId).append("\", \"guid\"=\"")
+				.append(guid).append("\"}");
 		return builder.toString();
 	}
 

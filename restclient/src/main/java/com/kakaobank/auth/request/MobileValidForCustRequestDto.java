@@ -25,6 +25,7 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	
 	public MobileValidForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
+		this.guid = this.makeGuid();
 	}
 	
 	public String getUserId() {
