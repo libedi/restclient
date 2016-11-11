@@ -116,12 +116,16 @@ public class E2eAuthUtil {
 	 * @param e2eIdResponseDto
 	 * @param unlockFirstRegRequestDto
 	 * @return UnlockCodeResponseDto
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 * @throws RequestException
+	 * @throws Exception 
 	 */
-	public UnlockCodeResponseDto requestUnlockCodeFirstRegistration(E2eIdResponseDto e2eIdResponseDto, UnlockFirstRegRequestDto unlockFirstRegRequestDto)
-			throws ClientProtocolException, IOException, RequestException{
+	public UnlockCodeResponseDto requestUnlockCodeFirstRegistration(E2eIdResponseDto e2eIdResponseDto, 
+			UnlockFirstRegRequestDto unlockFirstRegRequestDto) throws Exception{
+		
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		// 데이터 암호화
+		unlockFirstRegRequestDto.setValue(e2e.encryptMessage(unlockFirstRegRequestDto.getValue()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, unlockFirstRegRequestDto, UnlockCodeResponseDto.class);
 	}
@@ -132,12 +136,16 @@ public class E2eAuthUtil {
 	 * @param e2eIdResponseDto
 	 * @param unlockFirstRegRequestDto
 	 * @return UnlockCodeResponseDto
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 * @throws RequestException
+	 * @throws Exception 
 	 */
-	public UnlockCodeResponseDto requestUnlockCodeSecondRegistration(E2eIdResponseDto e2eIdResponseDto, UnlockSecondRegRequestDto unlockSecondRegRequestDto)
-			throws ClientProtocolException, IOException, RequestException{
+	public UnlockCodeResponseDto requestUnlockCodeSecondRegistration(E2eIdResponseDto e2eIdResponseDto,
+			UnlockSecondRegRequestDto unlockSecondRegRequestDto) throws Exception{
+		
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		// 데이터 암호화
+		unlockSecondRegRequestDto.setUnlockCode(e2e.encryptMessage(unlockSecondRegRequestDto.getUnlockCode()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, unlockSecondRegRequestDto, UnlockCodeResponseDto.class);
 	}
