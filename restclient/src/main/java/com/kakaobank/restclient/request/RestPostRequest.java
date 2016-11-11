@@ -1,7 +1,12 @@
 package com.kakaobank.restclient.request;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.http.Header;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -19,11 +24,20 @@ public abstract class RestPostRequest implements RestRequest {
 	@JsonIgnore
 	protected MessageConverter messageConverter;
 	
+	@JsonIgnore
+	protected Map<String, String> headerMap;
+	
+	public Map<String, String> getHeaderMap() {
+		return headerMap;
+	}
+	
 	@Override
 	public HttpRequest getHttpRequest() throws UnsupportedEncodingException, JsonProcessingException {
 		HttpPost post = new HttpPost(this.getRequestPath());
-		post.addHeader("Accept", "application/json");
-		post.addHeader("Content-Type", "application/json;charset=UTF-8");
+		post.addHeader(HttpHeaders.ACCEPT, "application/json");
+		post.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+		this.setCustomHeaders(post);
+		this.printHeaders(post);
 		StringEntity stringEntity = new StringEntity(this.getRequestParameters(), "UTF-8");
 		post.setEntity(stringEntity);
 		return post;
@@ -32,5 +46,23 @@ public abstract class RestPostRequest implements RestRequest {
 	@Override
 	public String getRequestParameters() throws JsonProcessingException {
 		return this.messageConverter.messageConvert(this);
+	}
+	
+	private void setCustomHeaders(HttpRequest httpRequest){
+		if(this.headerMap != null){
+			Iterator<Entry<String, String>> entrySet = this.headerMap.entrySet().iterator();
+			while(entrySet.hasNext()){
+				Entry<String, String> entry = entrySet.next();
+				httpRequest.addHeader(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+	
+	private void printHeaders(HttpRequest httpRequest){
+		StringBuilder sb = new StringBuilder();
+		for(Header header : httpRequest.getAllHeaders()){
+			System.out.println(sb.append("REQUEST HEADER : ").append(header).toString());
+			sb.setLength(0);
+		}
 	}
 }

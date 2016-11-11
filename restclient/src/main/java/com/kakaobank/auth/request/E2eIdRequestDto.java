@@ -2,6 +2,7 @@ package com.kakaobank.auth.request;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.validation.constraints.Size;
 
@@ -32,12 +33,10 @@ public class E2eIdRequestDto extends RestPostRequest {
 	@NotEmpty
 	@Size(min=6, max=6)
 	private String tellerId;		// 상담원ID
-	@NotEmpty
-	private String guid;			// GUID
 	
 	public E2eIdRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
-		this.guid = this.makeGuid();
+		this.makeDefaultHeader();
 	}
 
 	public String getPublicKey() {
@@ -58,17 +57,11 @@ public class E2eIdRequestDto extends RestPostRequest {
 	public void setTellerId(String tellerId) {
 		this.tellerId = tellerId;
 	}
-	public String getGuid() {
-		return guid;
-	}
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("E2eIdRequestDto{\"publicKey\"=\"").append(publicKey).append("\", \"userId\"=\"").append(userId)
-				.append("\", \"tellerId\"=\"").append(tellerId).append("\", \"guid\"=\"").append(guid).append("\"}");
+				.append("\", \"tellerId\"=\"").append(tellerId).append("\"}");
 		return builder.toString();
 	}
 	@Override
@@ -76,12 +69,15 @@ public class E2eIdRequestDto extends RestPostRequest {
 		return this.REQUEST_PATH;
 	}
 	
-	private String makeGuid(){
-		return new StringBuilder()
+	private void makeDefaultHeader(){
+		String guid = new StringBuilder()
 				.append("037CCSTMA039D")
 				.append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()))
 				.append(String.format("%06d", (int) (Math.random() * 1000000)))
 				.append("001")
 				.toString();
+		this.headerMap = new HashMap<>();
+		this.headerMap.put("X-KKB-CSTNO", "-1");
+		this.headerMap.put("X-KKB-GUID", guid);
 	}
 }

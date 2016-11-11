@@ -25,7 +25,7 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	
 	public MobileValidForCustRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
-		this.guid = this.makeGuid();
+		this.makeDefaultHeader();
 	}
 	
 	public String getUserId() {
@@ -44,8 +44,8 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId).append("\", \"validationId\"=\"")
-				.append(validationId).append("\", \"arthNo\"=\"").append(arthNo).append("\"}");
+				.append(validationId).append("\", \"arthNo\"=\"").append(arthNo).append("\", \"e2eId\"=\"")
+				.append(e2eId).append("\"}");
 		return builder.toString();
 	}
-
 }

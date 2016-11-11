@@ -2,6 +2,7 @@ package com.kakaobank.auth.request;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -21,9 +22,7 @@ import com.kakaobank.restclient.request.RestPostRequest;
 public abstract class EncryptedRequest extends RestPostRequest{
 	@NotEmpty
 	protected String e2eId;		// E2E ID
-	@NotEmpty
-	protected String guid;		// GUID
-
+	
 	public String getE2eId() {
 		return e2eId;
 	}
@@ -32,21 +31,23 @@ public abstract class EncryptedRequest extends RestPostRequest{
 		this.e2eId = e2eId;
 	}
 	
-	public String getGuid() {
-		return guid;
+	public void setCstNo(String cstNo) {
+		if(this.headerMap == null){
+			this.makeDefaultHeader();
+		}
+		this.headerMap.put("X-KKB-CSTNO", cstNo);
 	}
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-	
-	protected String makeGuid(){
-		return new StringBuilder()
+	protected void makeDefaultHeader(){
+		String guid = new StringBuilder()
 				.append("037CCSTMA039D")
 				.append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()))
 				.append(String.format("%06d", (int) (Math.random() * 1000000)))
 				.append("001")
 				.toString();
+		this.headerMap = new HashMap<>();
+		this.headerMap.put("X-KKB-CSTNO", "-1");
+		this.headerMap.put("X-KKB-GUID", guid);
 	}
 
 }

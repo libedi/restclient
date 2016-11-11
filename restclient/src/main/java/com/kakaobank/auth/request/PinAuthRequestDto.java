@@ -33,12 +33,12 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	@NotEmpty
 	private List<String> value;		// E2E 암호화된 PIN / 해제번호
 	@JsonIgnore
-	private String pinNum;			// PIN / 해제번호
+	private String pinNum;			// PIN
 	
 	public PinAuthRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
+		this.makeDefaultHeader();
 		this.value = new ArrayList<String>();
-		this.guid = this.makeGuid();
 	}
 	
 	public String getUserId() {
@@ -77,7 +77,7 @@ public class PinAuthRequestDto extends EncryptedRequest {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PinAuthRequestDto{\"userId\"=\"").append(userId).append("\", \"tellerId\"=\"").append(tellerId)
 				.append("\", \"value\"=\"").append(value).append("\", \"pinNum\"=\"").append(pinNum)
-				.append("\", \"e2eId\"=\"").append(e2eId).append("\", \"guid\"=\"").append(guid).append("\"}");
+				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
 	}
 	

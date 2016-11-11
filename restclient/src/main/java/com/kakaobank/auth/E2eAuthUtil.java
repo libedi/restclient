@@ -9,10 +9,13 @@ import com.kakaobank.auth.request.EncryptedRequest;
 import com.kakaobank.auth.request.MobileAuthRequestDto;
 import com.kakaobank.auth.request.MobileValidRequestDto;
 import com.kakaobank.auth.request.PinAuthRequestDto;
+import com.kakaobank.auth.request.UnlockFirstRegRequestDto;
+import com.kakaobank.auth.request.UnlockSecondRegRequestDto;
 import com.kakaobank.auth.response.E2eIdResponseDto;
 import com.kakaobank.auth.response.MobileAuthResponseDto;
 import com.kakaobank.auth.response.MobileValidResponseDto;
 import com.kakaobank.auth.response.PinAuthResponseDto;
+import com.kakaobank.auth.response.UnlockCodeResponseDto;
 import com.kakaobank.restclient.RestClient;
 import com.kakaobank.restclient.exception.RequestException;
 import com.kakaobank.restclient.response.RestResponse;
@@ -50,7 +53,7 @@ public class E2eAuthUtil {
 	}
 	
 	/**
-	 * PIN / 해제코드 인증 요청
+	 * PIN 인증 요청
 	 * 
 	 * @param e2eIdResponseDto
 	 * @param pinAuthRequestDto
@@ -94,21 +97,49 @@ public class E2eAuthUtil {
 	/**
 	 * 휴대폰 검증 요청
 	 * 
+	 * @param e2eIdResponseDto
 	 * @param mobileValidRequestDto
 	 * @return MobileValidResponseDto
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
-	 * @throws RequestException 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @throws RequestException
 	 */
-	public MobileValidResponseDto requestMobileValidataion(MobileValidRequestDto mobileValidRequestDto)
+	public MobileValidResponseDto requestMobileValidataion(E2eIdResponseDto e2eIdResponseDto, MobileValidRequestDto mobileValidRequestDto)
 			throws ClientProtocolException, IOException, RequestException{
-		
-		RestResponse<MobileValidResponseDto> resp = this.restClient.exchange(mobileValidRequestDto, MobileValidResponseDto.class);
-		MobileValidResponseDto result = null;
-		if(resp.has200StatusCode()){
-			result = resp.getContent();
-		}
-		return result;
+		// 인증요청
+		return this.requestEncryptedData(e2eIdResponseDto, mobileValidRequestDto, MobileValidResponseDto.class);
+	}
+	
+	/**
+	 * 해제코드 1차등록 요청
+	 * 
+	 * @param e2eIdResponseDto
+	 * @param unlockFirstRegRequestDto
+	 * @return UnlockCodeResponseDto
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @throws RequestException
+	 */
+	public UnlockCodeResponseDto requestUnlockCodeFirstRegistration(E2eIdResponseDto e2eIdResponseDto, UnlockFirstRegRequestDto unlockFirstRegRequestDto)
+			throws ClientProtocolException, IOException, RequestException{
+		// 인증요청
+		return this.requestEncryptedData(e2eIdResponseDto, unlockFirstRegRequestDto, UnlockCodeResponseDto.class);
+	}
+	
+	/**
+	 * 해제코드 2차등록 요청
+	 * 
+	 * @param e2eIdResponseDto
+	 * @param unlockFirstRegRequestDto
+	 * @return UnlockCodeResponseDto
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @throws RequestException
+	 */
+	public UnlockCodeResponseDto requestUnlockCodeSecondRegistration(E2eIdResponseDto e2eIdResponseDto, UnlockSecondRegRequestDto unlockSecondRegRequestDto)
+			throws ClientProtocolException, IOException, RequestException{
+		// 인증요청
+		return this.requestEncryptedData(e2eIdResponseDto, unlockSecondRegRequestDto, UnlockCodeResponseDto.class);
 	}
 	
 	/**
