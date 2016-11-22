@@ -16,8 +16,8 @@ import com.kakaobank.stamp.e2e.E2eEncryptor;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class E2eIdResponseDto extends ErrorResponse {
 	private String e2eId;				// E2E ID : Stamp 서버에서 발행되는 Key
-	private String serverPublicKey;	// 공개키 : Stamp 서버에서 생성한 공개키
-	private String code;
+	private String serverPublicKey;		// 공개키 : Stamp 서버에서 생성한 공개키
+	private String code;				// 응답코드
 	@JsonIgnore
 	private E2eEncryptor e2eEncryptor;
 	
@@ -49,12 +49,11 @@ public class E2eIdResponseDto extends ErrorResponse {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("E2eIdResponseDto{\"e2eId\"=\"").append(e2eId).append("\", \"serverPublicKey\"=\"")
-				.append(serverPublicKey).append("\", \"code\"=\"").append(code).append("\", \"e2eEncryptor\"=\"")
-				.append(e2eEncryptor).append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"")
+				.append(serverPublicKey).append("\", \"code\"=\"").append(code).append("\", \"deviceBlocked\"=\"")
+				.append(deviceBlocked).append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"")
 				.append(status).append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"")
 				.append(message).append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
 				.append("\", \"errors\"=\"").append(errors).append("\"}");
 		return builder.toString();
 	}
-	
 }

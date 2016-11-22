@@ -18,18 +18,26 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileValidRequestDto extends EncryptedRequest {
 	@JsonIgnore
-	private final String REQUEST_PATH = "/api/v1/authentication/mobile/";
+	private final String REQUEST_PATH = "/api/v1/authentications/mobile/";
 	
+	@JsonIgnore
+	protected String decryptedValidationId;		// 휴대폰 본인확인 거래번호
 	@NotEmpty
-	protected String validationId;		// 휴대폰 본인확인 거래번호
+	protected String validationId;				// 휴대폰 본인확인 거래번호
 	@NotEmpty
-	protected String arthNo;			// SMS 인증번호
+	protected String arthNo;					// SMS 인증번호
 	
 	public MobileValidRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
+	public String getDecryptedValidationId() {
+		return decryptedValidationId;
+	}
+	public void setDecryptedValidationId(String decryptedValidationId) {
+		this.decryptedValidationId = decryptedValidationId;
+	}
 	public String getValidationId() {
 		return validationId;
 	}
@@ -43,14 +51,16 @@ public class MobileValidRequestDto extends EncryptedRequest {
 		this.arthNo = arthNo;
 	}
 	@Override
-	public String getRequestPath() {
-		return new StringBuilder().append(this.REQUEST_PATH).append(this.validationId).toString();
-	}
-	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidRequestDto{\"validationId\"=\"").append(validationId).append("\", \"arthNo\"=\"")
-				.append(arthNo).append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
+		builder.append("MobileValidRequestDto{\"decryptedValidationId\"=\"").append(decryptedValidationId)
+				.append("\", \"validationId\"=\"").append(validationId).append("\", \"arthNo\"=\"").append(arthNo)
+				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
+	}
+
+	@Override
+	public String getRequestPath() {
+		return new StringBuilder().append(this.REQUEST_PATH).append(this.decryptedValidationId).toString();
 	}
 }

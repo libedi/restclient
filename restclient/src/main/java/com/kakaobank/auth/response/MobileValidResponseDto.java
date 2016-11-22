@@ -1,5 +1,8 @@
 package com.kakaobank.auth.response;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -20,6 +23,14 @@ public class MobileValidResponseDto extends ErrorResponse {
 	private String name;				// 고객명
 	private String birthdayAndGender;	// 주민번호 앞 7자리
 	private String ciNo;				// CI 번호
+	private String authDate;			// 인증날짜
+	private String authTime;			// 인증시간
+	
+	public MobileValidResponseDto() {
+		Date current = new Date();
+		this.authDate = new SimpleDateFormat("yyyyMMdd").format(current);
+		this.authTime = new SimpleDateFormat("HHmmss").format(current);
+	}
 	
 	public String getCode() {
 		return code;
@@ -63,6 +74,18 @@ public class MobileValidResponseDto extends ErrorResponse {
 	public void setCiNo(String ciNo) {
 		this.ciNo = ciNo;
 	}
+	public String getAuthDate() {
+		return authDate;
+	}
+	public void setAuthDate(String authDate) {
+		this.authDate = authDate;
+	}
+	public String getAuthTime() {
+		return authTime;
+	}
+	public void setAuthTime(String authTime) {
+		this.authTime = authTime;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -70,10 +93,12 @@ public class MobileValidResponseDto extends ErrorResponse {
 				.append(validationId).append("\", \"venderCode\"=\"").append(venderCode)
 				.append("\", \"phoneNumber\"=\"").append(phoneNumber).append("\", \"name\"=\"").append(name)
 				.append("\", \"birthdayAndGender\"=\"").append(birthdayAndGender).append("\", \"ciNo\"=\"").append(ciNo)
+				.append("\", \"authDate\"=\"").append(authDate).append("\", \"authTime\"=\"").append(authTime)
 				.append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"").append(status)
 				.append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"").append(message)
 				.append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
-				.append("\", \"errors\"=\"").append(errors).append("\"}");
+				.append("\", \"deviceBlocked\"=\"").append(deviceBlocked).append("\", \"errors\"=\"").append(errors)
+				.append("\"}");
 		return builder.toString();
 	}
 }

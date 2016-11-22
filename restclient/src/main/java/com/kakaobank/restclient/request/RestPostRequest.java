@@ -1,7 +1,6 @@
 package com.kakaobank.restclient.request;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -50,9 +49,7 @@ public abstract class RestPostRequest implements RestRequest {
 	
 	private void setCustomHeaders(HttpRequest httpRequest){
 		if(this.headerMap != null){
-			Iterator<Entry<String, String>> entrySet = this.headerMap.entrySet().iterator();
-			while(entrySet.hasNext()){
-				Entry<String, String> entry = entrySet.next();
+			for(Entry<String, String> entry : this.headerMap.entrySet()){
 				httpRequest.addHeader(entry.getKey(), entry.getValue());
 			}
 		}

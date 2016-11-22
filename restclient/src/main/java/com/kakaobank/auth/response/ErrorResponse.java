@@ -21,6 +21,7 @@ public abstract class ErrorResponse {
 	protected String message;		// 오류 메시지
 	protected String error;			// HTTP 상태 메시지
 	protected String path;			// 요청 URI 경로
+	protected Boolean deviceBlocked;
 	protected List<ErrorResponseDetail> errors;		// 상세오류사항
 	
 	public String getTimestamp() {
@@ -58,6 +59,12 @@ public abstract class ErrorResponse {
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public Boolean getDeviceBlocked() {
+		return deviceBlocked;
+	}
+	public void setDeviceBlocked(Boolean deviceBlocked) {
+		this.deviceBlocked = deviceBlocked;
 	}
 	public List<ErrorResponseDetail> getErrors() {
 		return errors;

@@ -100,12 +100,18 @@ public class E2eAuthUtil {
 	 * @param e2eIdResponseDto
 	 * @param mobileValidRequestDto
 	 * @return MobileValidResponseDto
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 * @throws RequestException
+	 * @throws Exception 
 	 */
 	public MobileValidResponseDto requestMobileValidataion(E2eIdResponseDto e2eIdResponseDto, MobileValidRequestDto mobileValidRequestDto)
-			throws ClientProtocolException, IOException, RequestException{
+			throws Exception{
+		
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+//		// 데이터 암호화
+		mobileValidRequestDto.setValidationId(e2e.encryptMessage(mobileValidRequestDto.getDecryptedValidationId()));
+		mobileValidRequestDto.setArthNo(e2e.encryptMessage(mobileValidRequestDto.getArthNo()));
+//		mobileValidRequestDto.setValidationId(mobileValidRequestDto.getDecryptedValidationId());
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, mobileValidRequestDto, MobileValidResponseDto.class);
 	}

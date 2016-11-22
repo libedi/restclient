@@ -18,7 +18,7 @@ import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	@JsonIgnore
-	private final String REQUEST_PATH = "/api/v1/authentication/:userId/mobile/";
+	private final String REQUEST_PATH = "/api/v1/authentications/:userId/mobile/";
 	
 	@NotEmpty
 	private String userId;	// 사용자관리번호
@@ -37,15 +37,16 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder()
-				.append(this.REQUEST_PATH.replace(":userId", this.userId)).append(this.validationId)
+				.append(this.REQUEST_PATH.replace(":userId", this.userId)).append(this.decryptedValidationId)
 				.toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId).append("\", \"validationId\"=\"")
-				.append(validationId).append("\", \"arthNo\"=\"").append(arthNo).append("\", \"e2eId\"=\"")
-				.append(e2eId).append("\"}");
+		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId)
+				.append("\", \"decryptedValidationId\"=\"").append(decryptedValidationId)
+				.append("\", \"validationId\"=\"").append(validationId).append("\", \"arthNo\"=\"").append(arthNo)
+				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
 	}
 }
