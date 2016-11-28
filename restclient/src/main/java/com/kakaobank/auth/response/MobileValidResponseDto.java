@@ -16,15 +16,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonInclude(Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MobileValidResponseDto extends ErrorResponse {
-	private String code;
+	private String code;				// 응답코드
 	private String validationId;		// 휴대폰 본인확인 거래번호
-	private String venderCode;			// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO) 
+	private String vendorCode;			// 통신사 코드 (01:SKT, 02:KT, 03:LGU, 04:SKTMVNO, 05:KTMVNO, 06:LGUMVNO) 
 	private String phoneNumber;			// 휴대폰 번호
 	private String name;				// 고객명
 	private String birthdayAndGender;	// 주민번호 앞 7자리
-	private String ciNo;				// CI 번호
-	private String authDate;			// 인증날짜
-	private String authTime;			// 인증시간
+	private String ci;					// CI 번호
+	private String failCount;			// 실패횟수
+	private String phoneNumberFailCount; 
+	private String authDate;			// 화면으로 넘겨줄 인증날짜
+	private String authTime;			// 화면으로 넘겨줄 인증시간
 	
 	public MobileValidResponseDto() {
 		Date current = new Date();
@@ -44,11 +46,11 @@ public class MobileValidResponseDto extends ErrorResponse {
 	public void setValidationId(String validationId) {
 		this.validationId = validationId;
 	}
-	public String getVenderCode() {
-		return venderCode;
+	public String getVendorCode() {
+		return vendorCode;
 	}
-	public void setVenderCode(String venderCode) {
-		this.venderCode = venderCode;
+	public void setVendorCode(String vendorCode) {
+		this.vendorCode = vendorCode;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -68,11 +70,23 @@ public class MobileValidResponseDto extends ErrorResponse {
 	public void setBirthdayAndGender(String birthdayAndGender) {
 		this.birthdayAndGender = birthdayAndGender;
 	}
-	public String getCiNo() {
-		return ciNo;
+	public String getCi() {
+		return ci;
 	}
-	public void setCiNo(String ciNo) {
-		this.ciNo = ciNo;
+	public void setCi(String ci) {
+		this.ci = ci;
+	}
+	public String getFailCount() {
+		return failCount;
+	}
+	public void setFailCount(String failCount) {
+		this.failCount = failCount;
+	}
+	public String getPhoneNumberFailCount() {
+		return phoneNumberFailCount;
+	}
+	public void setPhoneNumberFailCount(String phoneNumberFailCount) {
+		this.phoneNumberFailCount = phoneNumberFailCount;
 	}
 	public String getAuthDate() {
 		return authDate;
@@ -90,15 +104,16 @@ public class MobileValidResponseDto extends ErrorResponse {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MobileValidResponseDto{\"code\"=\"").append(code).append("\", \"validationId\"=\"")
-				.append(validationId).append("\", \"venderCode\"=\"").append(venderCode)
+				.append(validationId).append("\", \"vendorCode\"=\"").append(vendorCode)
 				.append("\", \"phoneNumber\"=\"").append(phoneNumber).append("\", \"name\"=\"").append(name)
-				.append("\", \"birthdayAndGender\"=\"").append(birthdayAndGender).append("\", \"ciNo\"=\"").append(ciNo)
-				.append("\", \"authDate\"=\"").append(authDate).append("\", \"authTime\"=\"").append(authTime)
-				.append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"").append(status)
-				.append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"").append(message)
-				.append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
-				.append("\", \"deviceBlocked\"=\"").append(deviceBlocked).append("\", \"errors\"=\"").append(errors)
-				.append("\"}");
+				.append("\", \"birthdayAndGender\"=\"").append(birthdayAndGender).append("\", \"ci\"=\"").append(ci)
+				.append("\", \"failCount\"=\"").append(failCount).append("\", \"phoneNumberFailCount\"=\"")
+				.append(phoneNumberFailCount).append("\", \"authDate\"=\"").append(authDate)
+				.append("\", \"authTime\"=\"").append(authTime).append("\", \"timestamp\"=\"").append(timestamp)
+				.append("\", \"status\"=\"").append(status).append("\", \"exception\"=\"").append(exception)
+				.append("\", \"message\"=\"").append(message).append("\", \"error\"=\"").append(error)
+				.append("\", \"path\"=\"").append(path).append("\", \"deviceBlocked\"=\"").append(deviceBlocked)
+				.append("\", \"errors\"=\"").append(errors).append("\"}");
 		return builder.toString();
 	}
 }

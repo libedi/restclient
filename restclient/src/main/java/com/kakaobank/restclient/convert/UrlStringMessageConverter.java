@@ -1,7 +1,7 @@
 package com.kakaobank.restclient.convert;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,15 +28,12 @@ public class UrlStringMessageConverter implements MessageConverter {
 		return message;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private List<NameValuePair> convertParam(RestRequest request){
-		Map<String, Object> paramMap = new ObjectMapper().convertValue(request, Map.class);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> paramMap = new ObjectMapper().convertValue(request, HashMap.class);
 		List<NameValuePair> paramList = new ArrayList<>();
-		Iterator<String> keys = paramMap.keySet().iterator();
-		String key = null;
-		while(keys.hasNext()){
-			key = keys.next();
-			paramList.add(new BasicNameValuePair(key, (String) paramMap.get(key)));
+		for(String key : paramMap.keySet()){
+			paramList.add(new BasicNameValuePair(key, String.valueOf(paramMap.get(key))));
 		}
 		return paramList;
 	}

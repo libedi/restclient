@@ -34,6 +34,8 @@ public class E2eIdRequestDto extends RestPostRequest {
 	@Size(min=6, max=6)
 	private String tellerId;		// 상담원ID
 	
+	private Integer num;
+	
 	public E2eIdRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
@@ -57,6 +59,15 @@ public class E2eIdRequestDto extends RestPostRequest {
 	public void setTellerId(String tellerId) {
 		this.tellerId = tellerId;
 	}
+	
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

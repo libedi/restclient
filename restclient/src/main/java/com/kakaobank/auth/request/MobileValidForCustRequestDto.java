@@ -37,16 +37,15 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder()
-				.append(this.REQUEST_PATH.replace(":userId", this.userId)).append(this.decryptedValidationId)
+				.append(this.REQUEST_PATH.replace(":userId", this.userId)).append(this.validationId)
 				.toString();
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId)
-				.append("\", \"decryptedValidationId\"=\"").append(decryptedValidationId)
-				.append("\", \"validationId\"=\"").append(validationId).append("\", \"arthNo\"=\"").append(arthNo)
-				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
+		builder.append("MobileValidForCustRequestDto{\"userId\"=\"").append(userId).append("\", \"validationId\"=\"")
+				.append(validationId).append("\", \"authNo\"=\"").append(authNo).append("\", \"e2eId\"=\"")
+				.append(e2eId).append("\"}");
 		return builder.toString();
 	}
 }

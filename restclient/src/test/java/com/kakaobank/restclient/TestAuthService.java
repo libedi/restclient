@@ -13,6 +13,8 @@ import com.kakaobank.auth.request.MobileAuthRequestDto;
 import com.kakaobank.auth.request.MobileValidForCustRequestDto;
 import com.kakaobank.auth.request.MobileValidRequestDto;
 import com.kakaobank.auth.request.PinAuthRequestDto;
+import com.kakaobank.auth.request.UnlockAuthRequestDto;
+import com.kakaobank.auth.request.UnlockAuthRequestDto.ProcessInfo;
 import com.kakaobank.auth.request.UnlockFirstRegRequestDto;
 import com.kakaobank.auth.request.UnlockSecondRegRequestDto;
 import com.kakaobank.auth.response.E2eIdResponseDto;
@@ -43,7 +45,7 @@ public class TestAuthService {
 	 * PIN 번호 인증 테스트
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void testCheckPinNumber() throws Exception {
 		String userId = "test_user";
 		String tellerId = "751952";
@@ -134,8 +136,8 @@ public class TestAuthService {
 		String userId = "1100000004";
 		String cstNo = "11000000045";
 		String tellerId = "751952";
-		String validationId = "1327619668269072418";
-		String arthNo = "002436";
+		String validationId = "1334826090488660029";
+		String authNo = "621761";
 		// 1. E2E 키 수신
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setUserId(userId);
@@ -145,19 +147,19 @@ public class TestAuthService {
 			// 2. 휴대폰 검증 수신
 			MobileValidForCustRequestDto requestDto = new MobileValidForCustRequestDto();
 			requestDto.setUserId(userId);
-			requestDto.setDecryptedValidationId(validationId);
-			requestDto.setArthNo(arthNo);
+			requestDto.setValidationId(validationId);
+			requestDto.setAuthNo(authNo);
 			requestDto.setCstNo(cstNo);
 			
 			MobileValidResponseDto actual = this.e2eAuthUtil.requestMobileValidataion(e2eIdResponseDto, requestDto);
 			if(actual != null){
 				// 3. 응답결과 반환
 				System.out.println(actual.toString());
-				assertNotNull(actual.getVenderCode());
+				assertNotNull(actual.getVendorCode());
 				assertNotNull(actual.getCode());
 				assertNotNull(actual.getMessage());
 				assertNotNull(actual.getPhoneNumber());
-				assertNotNull(actual.getCiNo());
+				assertNotNull(actual.getCi());
 				assertNotNull(actual.getName());
 				assertNotNull(actual.getBirthdayAndGender());
 			} else {
@@ -215,11 +217,11 @@ public class TestAuthService {
 	 * 비회원 휴대폰 번호 검증 테스트
 	 * @throws Exception
 	 */
-//	@Test
+	@Test
 	public void testCheckPhoneValidForNoRegCust() throws Exception {
 		String tellerId = "751952";
-		String validationId = "1329755437108559937";
-		String arthNo = "654611";
+		String validationId = "1334863897844252747";
+		String authNo = "257420";
 		// 1. E2E 키 수신
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setTellerId(tellerId);
@@ -227,18 +229,18 @@ public class TestAuthService {
 		if(e2eIdResponseDto != null){
 			// 2. 휴대폰 검증 수신
 			MobileValidRequestDto requestDto = new MobileValidRequestDto();
-			requestDto.setDecryptedValidationId(validationId);
-			requestDto.setArthNo(arthNo);
+			requestDto.setValidationId(validationId);
+			requestDto.setAuthNo(authNo);
 			
 			MobileValidResponseDto actual = this.e2eAuthUtil.requestMobileValidataion(e2eIdResponseDto, requestDto);
 			if(actual != null){
 				// 3. 응답결과 반환
 				System.out.println(actual.toString());
-				assertNotNull(actual.getVenderCode());
+				assertNotNull(actual.getVendorCode());
 				assertNotNull(actual.getCode());
 				assertNotNull(actual.getMessage());
 				assertNotNull(actual.getPhoneNumber());
-				assertNotNull(actual.getCiNo());
+				assertNotNull(actual.getCi());
 				assertNotNull(actual.getName());
 				assertNotNull(actual.getBirthdayAndGender());
 			} else {
@@ -257,7 +259,7 @@ public class TestAuthService {
 	 */
 //	@Test
 	public void testRegUnlockCodeFirst() throws Exception {
-		String userId = "1100000004";
+		String userId = "test_user";
 		String cstNo = "11000000045";
 		String tellerId = "751952";
 		String unlockCode = "123456";
@@ -322,6 +324,40 @@ public class TestAuthService {
 			}
 		} else {
 			System.out.println("E2E ID를 가져올 수 없습니다. [비회원고객]");
+			assertTrue(false);
+		}
+	}
+	
+//	@Test
+	public void testUnlockAuthentication() throws Exception {
+		String userId = "1100000004";
+		String cstNo = "11000000045";
+		String tellerId = "751952";
+		String unlockCode = "123456";
+		// 1. E2E 키 수신
+		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
+		e2eIdRequestDto.setUserId(userId);
+		e2eIdRequestDto.setTellerId(tellerId);
+		E2eIdResponseDto e2eIdResponseDto = this.e2eAuthUtil.getE2eId(e2eIdRequestDto);
+		if(e2eIdResponseDto != null){
+			UnlockAuthRequestDto requestDto = new UnlockAuthRequestDto();
+			requestDto.setUserId(userId);
+			requestDto.setUnlockCode(unlockCode);
+			requestDto.setProcessInfo(ProcessInfo.unlock);
+			requestDto.setCstNo(cstNo);
+			
+			UnlockCodeResponseDto actual = this.e2eAuthUtil.requestUnlockCodeAuthentication(e2eIdResponseDto, requestDto);
+			if(actual != null){
+				// 3. 응답결과 반환
+				System.out.println(actual.toString());
+				assertNotNull(actual.getCode());
+				assertNotNull(actual.getMessage());
+			} else {
+				System.out.println("해제코드 인증 결과를 가져올 수 없습니다.");
+				assertTrue(false);
+			}
+		} else {
+			System.out.println("E2E ID를 가져올 수 없습니다. [회원고객]");
 			assertTrue(false);
 		}
 	}

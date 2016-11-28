@@ -9,6 +9,7 @@ import com.kakaobank.auth.request.EncryptedRequest;
 import com.kakaobank.auth.request.MobileAuthRequestDto;
 import com.kakaobank.auth.request.MobileValidRequestDto;
 import com.kakaobank.auth.request.PinAuthRequestDto;
+import com.kakaobank.auth.request.UnlockAuthRequestDto;
 import com.kakaobank.auth.request.UnlockFirstRegRequestDto;
 import com.kakaobank.auth.request.UnlockSecondRegRequestDto;
 import com.kakaobank.auth.response.E2eIdResponseDto;
@@ -108,10 +109,8 @@ public class E2eAuthUtil {
 		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
 		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
 		e2e.setE2eId(e2eIdResponseDto.getE2eId());
-//		// 데이터 암호화
-		mobileValidRequestDto.setValidationId(e2e.encryptMessage(mobileValidRequestDto.getDecryptedValidationId()));
-		mobileValidRequestDto.setArthNo(e2e.encryptMessage(mobileValidRequestDto.getArthNo()));
-//		mobileValidRequestDto.setValidationId(mobileValidRequestDto.getDecryptedValidationId());
+		// 데이터 암호화
+		mobileValidRequestDto.setAuthNo(e2e.encryptMessage(mobileValidRequestDto.getAuthNo()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, mobileValidRequestDto, MobileValidResponseDto.class);
 	}
@@ -154,6 +153,25 @@ public class E2eAuthUtil {
 		unlockSecondRegRequestDto.setUnlockCode(e2e.encryptMessage(unlockSecondRegRequestDto.getUnlockCode()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, unlockSecondRegRequestDto, UnlockCodeResponseDto.class);
+	}
+	
+	/**
+	 * 해제코드 인증
+	 * @param e2eIdResponseDto
+	 * @param unlockAuthRequestDto
+	 * @return UnlockCodeResponseDto
+	 * @throws Exception
+	 */
+	public UnlockCodeResponseDto requestUnlockCodeAuthentication(E2eIdResponseDto e2eIdResponseDto,
+			UnlockAuthRequestDto unlockAuthRequestDto) throws Exception{
+		
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		// 데이터 암호화
+		unlockAuthRequestDto.setUnlockCode(e2e.encryptMessage(unlockAuthRequestDto.getUnlockCode()));
+		// 인증요청
+		return this.requestEncryptedData(e2eIdResponseDto, unlockAuthRequestDto, UnlockCodeResponseDto.class);
 	}
 	
 	/**
