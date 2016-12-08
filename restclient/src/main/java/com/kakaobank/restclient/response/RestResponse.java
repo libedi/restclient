@@ -81,15 +81,15 @@ public class RestResponse<T> {
 	}
 	
 	private void printResponseInfo(){
-		HttpEntity entity = this.response.getEntity();
 		StringBuilder sb = new StringBuilder();
 		sb.append("----------------------------------------\n");
 		sb.append(this.response.getStatusLine()).append("\n");
 		Header[] headers = this.response.getAllHeaders();
-		for (int i=0; i<headers.length; ++i) {
-			sb.append(headers[i]).append("\n");
+		for(Header header : headers){
+			sb.append(header).append("\n");
 		}
 		sb.append("----------------------------------------\n");
+		HttpEntity entity = this.response.getEntity();
 		if (entity != null) {
 			try {
 				sb.append(new ObjectMapper().writeValueAsString(this.getContent())).append("\n");
