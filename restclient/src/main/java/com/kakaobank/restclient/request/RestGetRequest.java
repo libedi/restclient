@@ -3,6 +3,7 @@ package com.kakaobank.restclient.request;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
@@ -26,7 +27,12 @@ public abstract class RestGetRequest implements RestRequest {
 	
 	@Override
 	public HttpRequest getHttpRequest() throws JsonProcessingException {
-		HttpGet get = new HttpGet(this.getRequestPath() + "?" + this.getRequestParameters());
+		String requestParameter = this.getRequestParameters();
+		StringBuilder requestPath = new StringBuilder(this.getRequestPath());
+		if(StringUtils.isNotEmpty(requestParameter)){
+			requestPath.append("?").append(requestParameter);
+		}
+		HttpGet get = new HttpGet(requestPath.toString());
 		get.addHeader(HttpHeaders.ACCEPT, "application/json");
 		this.setCustomHeaders(get);
 		this.printHeaders(get);

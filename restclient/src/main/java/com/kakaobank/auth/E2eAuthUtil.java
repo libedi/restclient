@@ -8,15 +8,18 @@ import com.kakaobank.auth.request.E2eIdRequestDto;
 import com.kakaobank.auth.request.EncryptedRequest;
 import com.kakaobank.auth.request.MobileAuthRequestDto;
 import com.kakaobank.auth.request.MobileValidRequestDto;
+import com.kakaobank.auth.request.OtpUnlockAuthRequestDto;
 import com.kakaobank.auth.request.PinAuthRequestDto;
 import com.kakaobank.auth.request.UnlockAuthRequestDto;
 import com.kakaobank.auth.request.UnlockFirstRegRequestDto;
 import com.kakaobank.auth.request.UnlockSecondRegRequestDto;
+import com.kakaobank.auth.request.UserAuthStatusRequestDto;
 import com.kakaobank.auth.response.E2eIdResponseDto;
 import com.kakaobank.auth.response.MobileAuthResponseDto;
 import com.kakaobank.auth.response.MobileValidResponseDto;
 import com.kakaobank.auth.response.PinAuthResponseDto;
 import com.kakaobank.auth.response.UnlockCodeResponseDto;
+import com.kakaobank.auth.response.UserAuthStatusResponseDto;
 import com.kakaobank.restclient.RestClient;
 import com.kakaobank.restclient.exception.RequestException;
 import com.kakaobank.restclient.response.RestResponse;
@@ -157,6 +160,7 @@ public class E2eAuthUtil {
 	
 	/**
 	 * 해제코드 인증
+	 * 
 	 * @param e2eIdResponseDto
 	 * @param unlockAuthRequestDto
 	 * @return UnlockCodeResponseDto
@@ -172,6 +176,47 @@ public class E2eAuthUtil {
 		unlockAuthRequestDto.setUnlockCode(e2e.encryptMessage(unlockAuthRequestDto.getUnlockCode()));
 		// 인증요청
 		return this.requestEncryptedData(e2eIdResponseDto, unlockAuthRequestDto, UnlockCodeResponseDto.class);
+	}
+	
+	/**
+	 * OTP 해제코드 인증
+	 * 
+	 * @param e2eIdResponseDto
+	 * @param otpUnlockAuthRequestDto
+	 * @return UnlockCodeResponseDto
+	 * @throws Exception
+	 */
+	public UnlockCodeResponseDto requestOtpUnlockCodeAuthentication(E2eIdResponseDto e2eIdResponseDto,
+			OtpUnlockAuthRequestDto otpUnlockAuthRequestDto) throws Exception{
+		
+		E2eEncryptor e2e = e2eIdResponseDto.getE2eEncryptor();
+		e2e.setStampPublicKey(e2eIdResponseDto.getServerPublicKey());
+		e2e.setE2eId(e2eIdResponseDto.getE2eId());
+		// 데이터 암호화
+		otpUnlockAuthRequestDto.setOtpUnlockCode(e2e.encryptMessage(otpUnlockAuthRequestDto.getOtpUnlockCode()));
+		// 인증요청
+		return this.requestEncryptedData(e2eIdResponseDto, otpUnlockAuthRequestDto, UnlockCodeResponseDto.class);
+	}
+	
+	/**
+	 * 사용자 가용 인증 수단 조회
+	 * 
+	 * @param UserAuthStatusRequestDto
+	 * @return UserAuthStatusResponseDto
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @throws RequestException
+	 */
+	public UserAuthStatusResponseDto requestUserAuthenticationStatus(UserAuthStatusRequestDto UserAuthStatusRequestDto)
+			throws ClientProtocolException, IOException, RequestException{
+		
+		RestResponse<UserAuthStatusResponseDto> resp = 
+				this.restClient.exchange(UserAuthStatusRequestDto, UserAuthStatusResponseDto.class);
+		UserAuthStatusResponseDto result = null;
+		if(resp.has200StatusCode()){
+			result = resp.getContent();
+		}
+		return result;
 	}
 	
 	/**
