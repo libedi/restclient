@@ -132,13 +132,14 @@ public class TestAuthService {
 	 * 회원 휴대폰 번호 검증 테스트
 	 * @throws Exception
 	 */
-//	@Test
+	@Test
 	public void testCheckPhoneValidForRegCust() throws Exception {
 		String userId = "1100000004";
 		String cstNo = "11000000045";
 		String tellerId = "751952";
-		String validationId = "1334826090488660029";
-		String authNo = "621761";
+		String validationId = "1344950577443898400";
+		String authNo = "706096";
+		String ci = "";
 		// 1. E2E 키 수신
 		E2eIdRequestDto e2eIdRequestDto = new E2eIdRequestDto();
 		e2eIdRequestDto.setUserId(userId);
@@ -151,6 +152,7 @@ public class TestAuthService {
 			requestDto.setValidationId(validationId);
 			requestDto.setAuthNo(authNo);
 			requestDto.setCstNo(cstNo);
+			requestDto.setCi(ci);
 			
 			MobileValidResponseDto actual = this.e2eAuthUtil.requestMobileValidataion(e2eIdResponseDto, requestDto);
 			if(actual != null){
@@ -163,6 +165,7 @@ public class TestAuthService {
 				assertNotNull(actual.getCi());
 				assertNotNull(actual.getName());
 				assertNotNull(actual.getBirthdayAndGender());
+				assertTrue(actual.getIsEqualsCiNo());
 			} else {
 				System.out.println("휴대폰번호 검증 결과를 가져올 수 없습니다.");
 				assertTrue(false);
@@ -370,7 +373,7 @@ public class TestAuthService {
 	 * 사용자 인증 수단 조회 테스트
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void testUserAuthentication() throws Exception {
 		String userId = "test_user";
 		UserAuthStatusRequestDto requestDto = new UserAuthStatusRequestDto();

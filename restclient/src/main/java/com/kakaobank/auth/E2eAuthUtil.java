@@ -2,6 +2,7 @@ package com.kakaobank.auth;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 
 import com.kakaobank.auth.request.E2eIdRequestDto;
@@ -115,7 +116,12 @@ public class E2eAuthUtil {
 		// 데이터 암호화
 		mobileValidRequestDto.setAuthNo(e2e.encryptMessage(mobileValidRequestDto.getAuthNo()));
 		// 인증요청
-		return this.requestEncryptedData(e2eIdResponseDto, mobileValidRequestDto, MobileValidResponseDto.class);
+		MobileValidResponseDto resp = this.requestEncryptedData(e2eIdResponseDto, mobileValidRequestDto, MobileValidResponseDto.class);
+		// 사용자 CI 번호와 인증 CI 번호 비교
+		if(StringUtils.isNotEmpty(mobileValidRequestDto.getCi())){
+			resp.setIsEqualsCiNo(StringUtils.equals(e2e.encryptMessage(mobileValidRequestDto.getCi()), resp.getCi()));
+		}
+		return resp;
 	}
 	
 	/**

@@ -25,6 +25,9 @@ public class MobileValidRequestDto extends EncryptedRequest {
 	@NotEmpty
 	protected String authNo;			// E2E 암호화된 SMS 인증번호
 	
+	@JsonIgnore
+	protected String ci;				// 사용자 CI 번호
+	
 	public MobileValidRequestDto() {
 		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
@@ -42,11 +45,18 @@ public class MobileValidRequestDto extends EncryptedRequest {
 	public void setAuthNo(String authNo) {
 		this.authNo = authNo;
 	}
+	public String getCi() {
+		return ci;
+	}
+	public void setCi(String ci) {
+		this.ci = ci;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MobileValidRequestDto{\"validationId\"=\"").append(validationId).append("\", \"authNo\"=\"")
-				.append(authNo).append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
+				.append(authNo).append("\", \"ci\"=\"").append(ci).append("\", \"e2eId\"=\"").append(e2eId)
+				.append("\"}");
 		return builder.toString();
 	}
 	@Override

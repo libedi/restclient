@@ -27,6 +27,7 @@ public class MobileValidResponseDto extends ErrorResponse {
 	private String phoneNumberFailCount; 
 	private String authDate;			// 화면으로 넘겨줄 인증날짜
 	private String authTime;			// 화면으로 넘겨줄 인증시간
+	private Boolean isEqualsCiNo;		// 사용자 CI번호와 인증 CI번호 비교 결과
 	
 	public MobileValidResponseDto() {
 		Date current = new Date();
@@ -100,6 +101,12 @@ public class MobileValidResponseDto extends ErrorResponse {
 	public void setAuthTime(String authTime) {
 		this.authTime = authTime;
 	}
+	public Boolean getIsEqualsCiNo() {
+		return isEqualsCiNo;
+	}
+	public void setIsEqualsCiNo(Boolean isEqualsCiNo) {
+		this.isEqualsCiNo = isEqualsCiNo;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -109,11 +116,12 @@ public class MobileValidResponseDto extends ErrorResponse {
 				.append("\", \"birthdayAndGender\"=\"").append(birthdayAndGender).append("\", \"ci\"=\"").append(ci)
 				.append("\", \"failCount\"=\"").append(failCount).append("\", \"phoneNumberFailCount\"=\"")
 				.append(phoneNumberFailCount).append("\", \"authDate\"=\"").append(authDate)
-				.append("\", \"authTime\"=\"").append(authTime).append("\", \"timestamp\"=\"").append(timestamp)
-				.append("\", \"status\"=\"").append(status).append("\", \"exception\"=\"").append(exception)
-				.append("\", \"message\"=\"").append(message).append("\", \"error\"=\"").append(error)
-				.append("\", \"path\"=\"").append(path).append("\", \"deviceBlocked\"=\"").append(deviceBlocked)
-				.append("\", \"errors\"=\"").append(errors).append("\"}");
+				.append("\", \"authTime\"=\"").append(authTime).append("\", \"isEqualsCiNo\"=\"").append(isEqualsCiNo)
+				.append("\", \"timestamp\"=\"").append(timestamp).append("\", \"status\"=\"").append(status)
+				.append("\", \"exception\"=\"").append(exception).append("\", \"message\"=\"").append(message)
+				.append("\", \"error\"=\"").append(error).append("\", \"path\"=\"").append(path)
+				.append("\", \"deviceBlocked\"=\"").append(deviceBlocked).append("\", \"errors\"=\"").append(errors)
+				.append("\"}");
 		return builder.toString();
 	}
 }
