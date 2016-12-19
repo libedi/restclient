@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 
 /**
  * 비회원 휴대폰 확인 검증 요청 DTO
@@ -29,7 +30,6 @@ public class MobileValidRequestDto extends EncryptedRequest {
 	protected String ci;				// 사용자 CI 번호
 	
 	public MobileValidRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
@@ -62,5 +62,10 @@ public class MobileValidRequestDto extends EncryptedRequest {
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder().append(this.REQUEST_PATH).append(this.validationId).toString();
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 }

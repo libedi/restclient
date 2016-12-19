@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 import com.kakaobank.restclient.request.RestPostRequest;
 
 /**
@@ -37,7 +38,6 @@ public class E2eIdRequestDto extends RestPostRequest {
 	private Integer num;
 	
 	public E2eIdRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 
@@ -90,5 +90,10 @@ public class E2eIdRequestDto extends RestPostRequest {
 		this.headerMap = new HashMap<>();
 		this.headerMap.put("X-KKB-CSTNO", "-1");
 		this.headerMap.put("X-KKB-GUID", guid);
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 }

@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.UrlStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 import com.kakaobank.restclient.request.RestGetRequest;
 
 /**
@@ -25,9 +26,6 @@ public class UserAuthStatusRequestDto extends RestGetRequest{
 	@NotEmpty
 	private String userId;	// 사용자관리번호
 	
-	public UserAuthStatusRequestDto(){
-		this.messageConverter = new UrlStringMessageConverter();
-	}
 	public String getUserId() {
 		return userId;
 	}
@@ -43,6 +41,10 @@ public class UserAuthStatusRequestDto extends RestGetRequest{
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder().append(this.REQUEST_PATH).append(this.getUserId()).toString();
+	}
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.URL);
 	}
 
 }

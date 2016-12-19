@@ -59,4 +59,6 @@ public abstract class RestGetRequest implements RestRequest {
 			sb.setLength(0);
 		}
 	}
+	
+	protected abstract void setMessageConverter();
 }

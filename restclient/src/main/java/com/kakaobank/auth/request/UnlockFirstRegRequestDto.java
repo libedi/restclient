@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 
 /**
  * 해제코드 1차등록 요청 DTO
@@ -27,7 +28,6 @@ public class UnlockFirstRegRequestDto extends EncryptedRequest {
 	private String value;	// E2E 암호화된 해제코드
 	
 	public UnlockFirstRegRequestDto(){
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
@@ -53,6 +53,11 @@ public class UnlockFirstRegRequestDto extends EncryptedRequest {
 	@Override
 	public String getRequestPath() {
 		return this.REQUEST_PATH.replace(":userId", this.userId);
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 
 }

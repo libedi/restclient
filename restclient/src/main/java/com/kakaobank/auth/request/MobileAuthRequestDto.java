@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 
 /**
  * 비회원 휴대폰 확인 요청 DTO
@@ -35,7 +36,6 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 	protected String birthdayAndGender;	// E2E 암호화 된 생년월일 8자리 + 성별코드 1자리 (190012311)
 	
 	public MobileAuthRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
@@ -74,5 +74,9 @@ public class MobileAuthRequestDto extends EncryptedRequest {
 				.append(phoneNumber).append("\", \"name\"=\"").append(name).append("\", \"birthdayAndGender\"=\"")
 				.append(birthdayAndGender).append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
+	}
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 }

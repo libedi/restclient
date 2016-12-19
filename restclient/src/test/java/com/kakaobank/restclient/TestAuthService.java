@@ -31,7 +31,8 @@ public class TestAuthService {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.restClient = new RestClient("10.13.12.26", 29201);
+//		this.restClient = new RestClient("10.13.12.26", 29201);
+		this.restClient = new RestClient("10.12.17.11", 29290);
 		this.e2eAuthUtil = new E2eAuthUtil();
 		this.e2eAuthUtil.setRestClient(restClient);
 	}
@@ -132,7 +133,7 @@ public class TestAuthService {
 	 * 회원 휴대폰 번호 검증 테스트
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void testCheckPhoneValidForRegCust() throws Exception {
 		String userId = "1100000004";
 		String cstNo = "11000000045";
@@ -180,7 +181,7 @@ public class TestAuthService {
 	 * 비회원 휴대폰 번호 인증 테스트
 	 * @throws Exception
 	 */
-//	@Test
+	@Test
 	public void testCheckPhoneAuthForNoRegCust() throws Exception {
 		String tellerId = "751952";
 		String custNm = "박상준";

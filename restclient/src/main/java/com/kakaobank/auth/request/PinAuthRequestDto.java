@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 
 /**
  * PIN / 해제번호 인증 요청 DTO
@@ -36,7 +37,6 @@ public class PinAuthRequestDto extends EncryptedRequest {
 	private String pinNum;			// PIN
 	
 	public PinAuthRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 		this.value = new ArrayList<String>();
 	}
@@ -79,6 +79,11 @@ public class PinAuthRequestDto extends EncryptedRequest {
 				.append("\", \"value\"=\"").append(value).append("\", \"pinNum\"=\"").append(pinNum)
 				.append("\", \"e2eId\"=\"").append(e2eId).append("\"}");
 		return builder.toString();
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 	
 }

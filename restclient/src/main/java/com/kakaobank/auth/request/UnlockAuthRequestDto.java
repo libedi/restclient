@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 
 @JsonInclude(Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -31,7 +33,6 @@ public class UnlockAuthRequestDto extends EncryptedRequest {
 	private ProcessInfo processInfo;	// 프로세스 타입
 	
 	public UnlockAuthRequestDto(){
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
@@ -64,5 +65,10 @@ public class UnlockAuthRequestDto extends EncryptedRequest {
 	@Override
 	public String getRequestPath() {
 		return new StringBuilder().append(this.REQUEST_PATH).append(this.userId).toString();
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 }

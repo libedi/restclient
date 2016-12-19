@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
 
 /**
  * 회원 휴대폰 확인 검증 요청 DTO
@@ -24,7 +23,6 @@ public class MobileValidForCustRequestDto extends MobileValidRequestDto {
 	private String userId;	// 사용자관리번호
 	
 	public MobileValidForCustRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
 		this.makeDefaultHeader();
 	}
 	
