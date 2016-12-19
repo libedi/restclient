@@ -2,7 +2,8 @@ package com.kakaobank.restclient.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.kakaobank.restclient.convert.JsonStringMessageConverter;
+import com.kakaobank.restclient.convert.MessageConverterFactory;
+import com.kakaobank.restclient.convert.MessageType;
 import com.kakaobank.restclient.request.RestPostRequest;
 
 @JsonInclude(Include.NON_NULL)
@@ -10,10 +11,6 @@ public class TestRequestDto extends RestPostRequest {
 	private String UserID;
 	private String Value;
 	private String e2eID;
-
-	public TestRequestDto() {
-		this.messageConverter = new JsonStringMessageConverter();
-	}
 
 	public String getUserID() {
 		return UserID;
@@ -49,6 +46,11 @@ public class TestRequestDto extends RestPostRequest {
 		builder.append("TestRequestDto{\"UserID\"=\"").append(UserID).append("\", \"Value\"=\"").append(Value)
 				.append("\", \"e2eID\"=\"").append(e2eID).append("\"}");
 		return builder.toString();
+	}
+
+	@Override
+	protected void setMessageConverter() {
+		this.messageConverter = MessageConverterFactory.createMessageConverter(MessageType.JSON);
 	}
 	
 }
