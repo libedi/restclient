@@ -44,6 +44,7 @@ public abstract class RestPostRequest implements RestRequest {
 	
 	@Override
 	public String getRequestParameters() throws JsonProcessingException {
+		this.setMessageConverter();
 		return this.messageConverter.messageConvert(this);
 	}
 	
